@@ -24,13 +24,14 @@ create_table();
 function next() {
 	delete_table();
 	k++;
+	let tmp = i+5;
 	if(i >= arr.length) {
 		i = 5;
 		k = 1;
 		return create_table();
 	}
 	page_number.innerHTML = "Page " + k;
-	while(i < arr.length) {
+	while(i < tmp) {
 		let body_cell = body_row.insertCell(-1);
 		body_cell.innerHTML = arr[i];
 		i++;

@@ -3,13 +3,7 @@ body {
   font-family: "Open Sans", sans-serif;
   padding: 0;
   margin: 0;
-  background-color: #511f9b;
-  background-size: 53px 53px;
-  background-image: radial-gradient(
-    transparent 28px,
-    #ffffff 28px,
-    #ffffff 32px,
-    transparent 32px)
+  background-color: #262c3a;
 }
 
 .function_table {
@@ -84,8 +78,12 @@ body {
 }
 
 .page_number {
+  font-size: 22px;
   text-align: center;
+  color: white;
 }
+
+
 
 @media screen and (max-width: 600px) {
   .function_table {
