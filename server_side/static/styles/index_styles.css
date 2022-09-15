@@ -1,4 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap');
+
+
 body {
   font-family: "Open Sans", sans-serif;
   padding: 0;
@@ -78,6 +81,7 @@ body {
 }
 
 .page_number {
+  font-family: 'Inconsolata', monospace;
   font-size: 22px;
   text-align: center;
   color: white;
