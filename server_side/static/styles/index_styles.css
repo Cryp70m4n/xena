@@ -2,51 +2,100 @@
 body {
   font-family: "Open Sans", sans-serif;
 }
-table {
+
+.function_table {
   border: 1px solid #ccc;
   border-collapse: collapse;
   margin:0;
   padding:0;
-  width: 100%;
+  width: 15%;
+  margin-left: auto;
+  margin-right: auto;
 }
-table tr {
+
+.function_table tr {
   border: 1px solid #ddd;
   padding: 5px;
 }
-table th, table td {
+
+.function_table th, table td {
+  border-bottom: 1px dotted #ccc;
+  display: block;
+  font-size: 13px;
   padding: 10px;
   text-align: center;
 }
-table th {
+
+.function_table th {
   font-size: 14px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+
+.next_button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 60px;
+  text-decoration: none;
+  font-size: 16px;
+  display:block;
+  position:relative;
+  text-align: center;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 0.6s ease;
+  background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.next_button::after{
+  content: '';
+  border: 1px solid #4CAF50;
+  display: block;
+  width: 100%;
+}
+.next_button:hover{
+  background-color: #358f38;
+  color: white;
+  padding: 15px 80px;
+}
+
+.page_number {
+  text-align: center;
+}
+
 @media screen and (max-width: 600px) {
-  table {
+  .function_table {
+    width: 50%;
     border: 0;
   }
-  table thead {
-    display: none;
-  }
-  table tr {
-    border-bottom: 2px solid #ddd;
-    display: block;
-    margin-bottom: 10px;
-  }
-  table td {
+  .function_table td {
     border-bottom: 1px dotted #ccc;
     display: block;
-    font-size: 13px;
+    font-size: 12px;
     text-align: right;
+    margin: 5px;
   }
-  table td:last-child {
+  .function_table td:last-child {
     border-bottom: 0;
   }
-  table td:before {
+  .function_table td:before {
     content: attr(data-label);
     float: left;
     font-weight: bold;
     text-transform: uppercase;
   }
+
 }
