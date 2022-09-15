@@ -1,9 +1,19 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 body {
   font-family: "Open Sans", sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: #511f9b;
+  background-size: 53px 53px;
+  background-image: radial-gradient(
+    transparent 28px,
+    #ffffff 28px,
+    #ffffff 32px,
+    transparent 32px)
 }
 
 .function_table {
+  background-color: #020031;
   border: 1px solid #ccc;
   border-collapse: collapse;
   margin:0;
@@ -11,6 +21,7 @@ body {
   width: 15%;
   margin-left: auto;
   margin-right: auto;
+  color: white;
 }
 
 .function_table tr {
@@ -49,7 +60,7 @@ body {
   border-radius: 100px;
   cursor: pointer;
   transition: 0.6s ease;
-  background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);
+  background-image: linear-gradient(to right, #190d44 0%, #262c3a 51%, #160036 100%);
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -62,12 +73,12 @@ body {
 
 .next_button::after{
   content: '';
-  border: 1px solid #4CAF50;
+  border: 1px solid #160036;
   display: block;
   width: 100%;
 }
 .next_button:hover{
-  background-color: #358f38;
+  background-color: #14282a;
   color: white;
   padding: 15px 80px;
 }
