@@ -67,6 +67,11 @@ def index():
 
     return render_template('/index.html')
 
+@app.route('/register')
+def register():
+    log_info(request)
+    return render_template('/register.html')
+
 @app.route('/api/read_shared', methods=['GET'])
 def read_shared():
     session = session_check(request)
