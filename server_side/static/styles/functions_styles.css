@@ -9,6 +9,46 @@ body {
   background-color: #262c3a;
 }
 
+.edit_functions {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 60px;
+  text-decoration: none;
+  font-size: 16px;
+  display:block;
+  position:relative;
+  text-align: top;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 0.6s ease;
+  background-image: linear-gradient(to right, #190d44 0%, #262c3a 51%, #160036 100%);
+  text-align: top;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.edit_functions::after{
+  content: '';
+  border: 1px solid #160036;
+  display: block;
+  width: 100%;
+}
+.edit_functions:hover{
+  background-color: #14282a;
+  color: white;
+  padding: 15px 80px;
+}
+
 .function_table {
   background-color: #020031;
   border: 1px solid #ccc;
