@@ -6,14 +6,14 @@ let page_number = document.getElementById("page_number");
 function create_table() {
 	for(let r = 0; r < 5;r++) {
 		let body_cell = body_row.insertCell(-1);
-		body_cell.innerHTML = arr[r];
+		body_cell.textContent = arr[r];
 	}
-	page_number.innerHTML = "Page " + k;
+	page_number.textContent = "Page " + k;
 }
 
 
 function delete_table() {
-	body_row.innerHTML = "";
+	body_row.textContent = "";
 }
 
 let i = 5;
@@ -30,10 +30,10 @@ function next() {
 		k = 1;
 		return create_table();
 	}
-	page_number.innerHTML = "Page " + k;
+	page_number.textContent = "Page " + k;
 	while(i < tmp) {
 		let body_cell = body_row.insertCell(-1);
-		body_cell.innerHTML = arr[i];
+		body_cell.textContent = arr[i];
 		i++;
 	}
 }
