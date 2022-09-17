@@ -67,6 +67,16 @@ def index():
 
     return render_template('/index.html')
 
+@app.route('/admin')
+def admin():
+    log_info(request)
+    return render_template('/admin.html')
+
+@app.route('/login')
+def login():
+    log_info(request)
+    return render_template('/login.html')
+
 @app.route('/register')
 def register():
     log_info(request)

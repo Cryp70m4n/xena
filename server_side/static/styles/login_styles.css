@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #262c3a;
+}
+
+
+.title {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 46px;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	color: white;
+}
+
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 26px;
+  }
+}
