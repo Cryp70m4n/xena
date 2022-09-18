@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import bcrypt
-import sqlite3
+import mariadb
 import time
 import os
 import binascii
@@ -15,13 +15,24 @@ import logger
 TODO:
     - Parse permission level from config file instead of predefining them in code
     - Add function to delete session
+    - Parse DB data from config file
 """
 
 
 class authorisation():
     def __init__(self):
-        self.db = "xena.db"
-        self.conn = sqlite3.connect(self.db, check_same_thread=False)
+        self.db = "xena"
+        self.db_user = "root"
+        self.db_password = "S3curE123#!"
+        self.db_host = "127.0.0.1"
+        self.db_port = 3306
+        self.conn = mariadb.connect(
+            user=self.db_user,
+            password=self.db_password,
+            host=self.db_host,
+            port=self.db_port,
+            database=self.db
+        )
         self.cursor = self.conn.cursor()
         self.iv = 100
         self.token_duration = 30*60  # 30 minutes in seconds
@@ -86,7 +97,7 @@ class authorisation():
         sql_check = "DELETE FROM sessions WHERE user_id = ?"
         self.cursor.execute(sql_check, [usr_id])
         self.conn.commit()
-        sql = "INSERT OR IGNORE INTO sessions(key, nonce, user_id, creation_time) VALUES(?, ?, ?, ?)"
+        sql = "INSERT OR IGNORE INTO sessions(enc_key, nonce, user_id, creation_time) VALUES(?, ?, ?, ?)"
         self.cursor.execute(sql, (str(key)[0:][2:][:-1], nonce, usr_id, int(time.time()+self.token_duration)))
         self.conn.commit()
         return base64.b64encode(session)
@@ -128,7 +139,7 @@ class authorisation():
         if rows == []:
             return self.throw_error(1, "User error!\nGiven user were not found in database!")
         usr_id = rows[0][0]
-        sql2 = "SELECT key, nonce, creation_time FROM sessions WHERE user_id = ?"
+        sql2 = "SELECT enc_key, nonce, creation_time FROM sessions WHERE user_id = ?"
         self.cursor.execute(sql2, [usr_id])
         rows2 = self.cursor.fetchall()
         self.conn.commit()

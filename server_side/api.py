@@ -35,10 +35,8 @@ auth = authorisation()
 #token checking/cleaning
 def check_tokens():
     threading.Timer(5.0, check_tokens).start()
-    print("works")
     auth.token_timestamp_check()
 check_tokens()
-print("aaa")
 
 ip = "127.0.0.1"
 port = 4334
