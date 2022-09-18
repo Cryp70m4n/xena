@@ -12,8 +12,7 @@ from scripts.shared import shared
 
 """
 TODO:
-    - Switch to DJANGO or FASTAPI
-    - FIX RACE CONDITION IF TOKEN TIMESTAMP CHECK THREAD RUNS IN THE SAME TIME WHEN SOMETHING IS WRITTEN OR READ FROM DB SEG FAULT WILL HAPPEN
+    - Switch to FASTAPI
 """
 
 def log_info(request=None):
