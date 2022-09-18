@@ -14,13 +14,14 @@ import logger
 """
 TODO:
     - Parse permission level from config file instead of predefining them in code
+    - Add function to delete session
 """
 
 
 class authorisation():
     def __init__(self):
         self.db = "xena.db"
-        self.conn = sqlite3.connect(self.db)
+        self.conn = sqlite3.connect(self.db, check_same_thread=False)
         self.cursor = self.conn.cursor()
         self.iv = 100
         self.token_duration = 30*60  # 30 minutes in seconds
@@ -67,6 +68,8 @@ class authorisation():
         return result
 
     def create_session(self, usr=None):
+        if usr == None:
+            return self.throw_error(1, "User cannot be none!")
         key = os.urandom(32)
         generate_nonce = os.urandom(64)
         nonce = binascii.hexlify(generate_nonce)

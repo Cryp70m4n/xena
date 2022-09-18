@@ -4,6 +4,7 @@ from auth import authorisation
 import binascii
 import string
 import json
+import threading
 
 
 import logger
@@ -11,7 +12,8 @@ from scripts.shared import shared
 
 """
 TODO:
-    Switch to DJANGO or FASTAPI
+    - Switch to DJANGO or FASTAPI
+    - FIX RACE CONDITION IF TOKEN TIMESTAMP CHECK THREAD RUNS IN THE SAME TIME WHEN SOMETHING IS WRITTEN OR READ FROM DB SEG FAULT WILL HAPPEN
 """
 
 def log_info(request=None):
@@ -29,6 +31,14 @@ def log_info(request=None):
     return 0
 
 auth = authorisation()
+
+#token checking/cleaning
+def check_tokens():
+    threading.Timer(5.0, check_tokens).start()
+    print("works")
+    auth.token_timestamp_check()
+check_tokens()
+print("aaa")
 
 ip = "127.0.0.1"
 port = 4334
