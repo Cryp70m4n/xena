@@ -12,14 +12,14 @@ login = {
     'password': 'root'
 }
 
-res = requests.get("http://localhost:4334/", json=login)
+res = requests.get("http://localhost:4334/login", json=login)
 
 json_data = {
     'session': res.text,
     'user': 'root',
 }
 
-response = requests.get('http://localhost:4334/api/read_shared', json=json_data)
+response = requests.post('http://localhost:4334/api/read_shared', json=json_data)
 print(response.text)
 
 

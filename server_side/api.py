@@ -12,7 +12,7 @@ from scripts.shared import shared
 
 """
 TODO:
-    - Switch to FASTAPI
+    - FUCK FASTAPI AND BENCHMARKS!
 """
 
 def log_info(request=None):
@@ -78,7 +78,7 @@ def usr_passwd_auth(data=None):
     session = auth.user_password_authentication(data["user"], data["password"])
     return session
 
-def validate(data=None):
+def usr_pass_validate(data=None):
     if "user" not in data:
         return "username must be included inside json data"
     if "password" not in data:
@@ -121,7 +121,7 @@ def authentication():
     data = request.json
     data = jsonify(data)
     data = data.json
-    check = validate(data)
+    check = usr_pass_validate(data)
     if  check != True:
         return check
 
@@ -129,6 +129,21 @@ def authentication():
     response_data = {"token": session.decode('utf-8'), "response": "Works!"}
     response = json.dumps(response_data)
     return response
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if user not in data:
+        return "User must be included!"
+    if session not in data:
+        return "Session must be included!"
+    for char in data["user"]:
+        if char not in user_input_whitelist:
+            return False
+    
+    return auth.delete_session(user, session)
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
