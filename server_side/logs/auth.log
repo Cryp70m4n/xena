@@ -1336,3 +1336,11 @@
 18-Sep-22 09:37:49 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
 18-Sep-22 09:43:06 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
 18-Sep-22 09:44:33 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:31:28 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:31:32 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:31:36 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:31:40 - WARNING - function:user_password_authentication | error_type:Unauthorised
+18-Sep-22 10:33:07 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:33:29 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:33:52 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 10:33:52 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!

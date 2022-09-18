@@ -34,6 +34,8 @@ ip = "127.0.0.1"
 port = 4334
 app = Flask(__name__, template_folder='templates')
 
+
+#INPUT WHITELISTS
 chars = list(string.ascii_lowercase)
 nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -45,6 +47,7 @@ password_input_whitelist = chars + up_chars + symbols + nums
 
 
 
+#AUTHENTICATION FUNCTIONS / LOGIC
 def session_check(data=None):
     data = request.json
     data = jsonify(data)
@@ -61,8 +64,6 @@ def usr_passwd_auth(data=None):
     data = request.json
     data = jsonify(data)
     data = data.json
-    if data == None:
-        return "You must pass in some data"
     if "user" not in data:
         return "username must be included inside json data"
     if "password" not in data:
@@ -72,8 +73,6 @@ def usr_passwd_auth(data=None):
 
 def validate(data=None):
     print(data)
-    if data == None:
-        return "You must pass in some data"
     if "user" not in data:
         return "username must be included inside json data"
     if "password" not in data:
@@ -82,12 +81,15 @@ def validate(data=None):
     password = data["password"]
     for char in user:
         if char not in user_input_whitelist:
-            return False
+            return "Username contains illegal characters!"
     for char in password:
         if char not in password_input_whitelist:
-            return False
+            return "Password contains illegal chracters!"
     return True
 
+
+
+#ENDPOINTS
 @app.route('/', methods=['GET'])
 def index():
     log_info(request)
@@ -113,8 +115,9 @@ def authentication():
     data = request.json
     data = jsonify(data)
     data = data.json
-    if validate(data) != True:
-        return "NO FUNNY BUSSINES HERE HAXXOR GO AWAY"
+    check = validate(data)
+    if  check != True:
+        return check
     return usr_passwd_auth(data)
 
 @app.route('/api/read_shared', methods=['POST'])
