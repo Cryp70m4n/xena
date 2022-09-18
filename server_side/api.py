@@ -3,6 +3,8 @@ from gevent.pywsgi import WSGIServer
 from auth import authorisation
 import binascii
 import string
+import json
+
 
 import logger
 from scripts.shared import shared
@@ -55,7 +57,7 @@ def session_check(data=None):
         return "session must be included inside json data"
     return auth.session_authentication(data["user"], data["session"])
 
-def usr_passwd_auth(data=None) -> bool:
+def usr_passwd_auth(data=None):
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -68,10 +70,14 @@ def usr_passwd_auth(data=None) -> bool:
     session = auth.user_password_authentication(data["user"], data["password"])
     return session
 
-def validate(data=None) -> bool:
+def validate(data=None):
     print(data)
     if data == None:
         return "You must pass in some data"
+    if "user" not in data:
+        return "username must be included inside json data"
+    if "password" not in data:
+        return "password must be included inside json data"
     user = data["user"]
     password = data["password"]
     for char in user:
@@ -109,11 +115,7 @@ def authentication():
     data = data.json
     if validate(data) != True:
         return "NO FUNNY BUSSINES HERE HAXXOR GO AWAY"
-    if usr_passwd_auth(data) != True:
-        return "Wrong user/password!"
-
-    #RETURN SESSION & OTHER INFO HERE
-    return "Success loading profile page..."
+    return usr_passwd_auth(data)
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():

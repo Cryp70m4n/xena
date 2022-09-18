@@ -1333,3 +1333,6 @@
 27-Aug-22 17:09:23 - WARNING - function:session_authentication | error:User error! | Given user were not found in database!
 27-Aug-22 19:31:15 - INFO - Session authorised!
 27-Aug-22 19:31:15 - INFO - Session authorised!
+18-Sep-22 09:37:49 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 09:43:06 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+18-Sep-22 09:44:33 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
