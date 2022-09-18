@@ -9,10 +9,16 @@ function submitform() {
 		"user": usr,
 		"password": passwd,
 	};
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState === 4) {
-			console.log(xhr.response); 
+	xhr.onload = function() {
+		let response = null
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
 		}
+		let response_obj = JSON.parse(response)
+		let token = response_obj.token
+		let token_object = {'session': token}
+		console.log(token_object)
+		localStorage.setItem('token_object', JSON.stringify(token_object));
 	}
 
 	xhr.send(JSON.stringify(data));

@@ -65,7 +65,10 @@ def session_check(data=None):
         return "username must be included inside json data"
     if "session" not in data:
         return "session must be included inside json data"
-    return auth.session_authentication(data["user"], data["session"])
+    check = auth.session_authentication(data["user"], data["session"])
+    if check != "Session authorised!":
+        return False
+    return True
 
 def usr_passwd_auth(data=None):
     data = request.json
@@ -126,7 +129,10 @@ def authentication():
         return check
 
     session = usr_passwd_auth(data)
-    response_data = {"token": session.decode('utf-8'), "response": "Works!"}
+    try:
+        response_data = {"token": session.decode('utf-8'), "response_status": "Success!"}
+    except:
+        response_data = {"response_status": "Session Error!"}
     response = json.dumps(response_data)
     return response
 
