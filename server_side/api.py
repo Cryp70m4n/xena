@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template_string, render_templa
 from gevent.pywsgi import WSGIServer
 from auth import authorisation
 import binascii
+import string
 
 import logger
 from scripts.shared import shared
@@ -31,8 +32,18 @@ ip = "127.0.0.1"
 port = 4334
 app = Flask(__name__, template_folder='templates')
 
+chars = list(string.ascii_lowercase)
+nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-def session_check(data=None, methods=['POST']):
+user_input_whitelist = chars+nums
+
+up_chars = list(string.ascii_uppercase)
+symbols = ['#', '!', '@', '?', '^', '$']
+password_input_whitelist = chars + up_chars + symbols + nums
+
+
+
+def session_check(data=None):
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -44,7 +55,7 @@ def session_check(data=None, methods=['POST']):
         return "session must be included inside json data"
     return auth.session_authentication(data["user"], data["session"])
 
-def usr_passwd_auth():
+def usr_passwd_auth(data=None) -> bool:
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -57,13 +68,23 @@ def usr_passwd_auth():
     session = auth.user_password_authentication(data["user"], data["password"])
     return session
 
+def validate(data=None) -> bool:
+    print(data)
+    if data == None:
+        return "You must pass in some data"
+    user = data["user"]
+    password = data["password"]
+    for char in user:
+        if char not in user_input_whitelist:
+            return False
+    for char in password:
+        if char not in password_input_whitelist:
+            return False
+    return True
+
 @app.route('/', methods=['GET'])
 def index():
     log_info(request)
-    #session = session_check(request)
-    #if session != 0:
-    #    return usr_passwd_auth()
-
     return render_template('/index.html')
 
 @app.route('/admin', methods=['GET'])
@@ -74,10 +95,6 @@ def admin():
 @app.route('/login', methods=['GET'])
 def login():
     log_info(request)
-    if validate != 0:
-        return "Wrong user/password!"
-    if validate == 0:
-        return "Success loading profile page..."
     return render_template('/login.html')
 
 @app.route('/register', methods=['GET'])
@@ -85,18 +102,33 @@ def register():
     log_info(request)
     return render_template('/register.html')
 
+@app.route('/authentication', methods=['POST'])
+def authentication():
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if validate(data) != True:
+        return "NO FUNNY BUSSINES HERE HAXXOR GO AWAY"
+    if usr_passwd_auth(data) != True:
+        return "Wrong user/password!"
+
+    #RETURN SESSION & OTHER INFO HERE
+    return "Success loading profile page..."
+
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
     session = session_check(request)
-    if session != 0:
-        return usr_passwd_auth()
+    if session != True:
+        #REDIRECT TO INDEX
+        return "GO AWAY!"
     return shared.read_shared()
 
 @app.route('/api/download_shared', methods=['POST'])
 def download_shared():
     session = session_check(request)
-    if session !=  0:
-        return usr_passwd_auth()
+    if session !=  True:
+        #REDIRECT TO INDEX
+        return "GO AWAY!"
     try:
         target_file = request.args["file"]
     except:
@@ -106,7 +138,7 @@ def download_shared():
 
 @app.route('/api/whoami', methods=['POST']) 
 def whoami():
-    if session_check(request) == 0:
+    if session_check(request) == True:
         return "Success!"
     return "False!"
 
