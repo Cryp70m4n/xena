@@ -32,7 +32,7 @@ port = 4334
 app = Flask(__name__, template_folder='templates')
 
 
-def session_check(data=None):
+def session_check(data=None, methods=['POST']):
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -44,7 +44,6 @@ def session_check(data=None):
         return "session must be included inside json data"
     return auth.session_authentication(data["user"], data["session"])
 
-@app.route('/api/usr_passwd_auth', methods=['POST'])
 def usr_passwd_auth():
     data = request.json
     data = jsonify(data)
@@ -58,41 +57,45 @@ def usr_passwd_auth():
     session = auth.user_password_authentication(data["user"], data["password"])
     return session
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     log_info(request)
     #session = session_check(request)
-    #if session != "Session authorised!":
+    #if session != 0:
     #    return usr_passwd_auth()
 
     return render_template('/index.html')
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET'])
 def admin():
     log_info(request)
     return render_template('/admin.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login():
     log_info(request)
+    if validate != 0:
+        return "Wrong user/password!"
+    if validate == 0:
+        return "Success loading profile page..."
     return render_template('/login.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET'])
 def register():
     log_info(request)
     return render_template('/register.html')
 
-@app.route('/api/read_shared', methods=['GET'])
+@app.route('/api/read_shared', methods=['POST'])
 def read_shared():
     session = session_check(request)
     if session != 0:
         return usr_passwd_auth()
     return shared.read_shared()
 
-@app.route('/api/download_shared', methods=['GET'])
+@app.route('/api/download_shared', methods=['POST'])
 def download_shared():
     session = session_check(request)
-    if session != 0:
+    if session !=  0:
         return usr_passwd_auth()
     try:
         target_file = request.args["file"]
@@ -101,7 +104,7 @@ def download_shared():
     return shared.download_shared(target_file)
 
 
-@app.route('/api/whoami', methods=['GET']) 
+@app.route('/api/whoami', methods=['POST']) 
 def whoami():
     if session_check(request) == 0:
         return "Success!"
