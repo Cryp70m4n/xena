@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template_string, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 from gevent.pywsgi import WSGIServer
 from auth import authorisation
 import binascii
@@ -124,16 +124,14 @@ def authentication():
 def read_shared():
     session = session_check(request)
     if session != True:
-        #REDIRECT TO INDEX
-        return "GO AWAY!"
+        return redirect('/')
     return shared.read_shared()
 
 @app.route('/api/download_shared', methods=['POST'])
 def download_shared():
     session = session_check(request)
     if session !=  True:
-        #REDIRECT TO INDEX
-        return "GO AWAY!"
+        return redirect('/')
     try:
         target_file = request.args["file"]
     except:
