@@ -14,7 +14,6 @@ import logger
 """
 TODO:
     - Parse permission level from config file instead of predefining them in code
-    - Add function to delete session
     - Parse DB data from config file
 """
 
@@ -176,6 +175,22 @@ class authorisation():
             self.conn.commit()
             return self.throw_error(1, "Token error!\nToken expired!")
         return self.throw_success("Session authorised!")
+
+    def delete_session(self, usr=None, session=None):
+        validate = self.session_authentication(usr, session)
+        if  validate != 0:
+            return validate
+        sql = "SELECT id FROM users WHERE user = ?"
+        self.cursor.execute(sql, [usr])
+        rows = self.cursor.fetchall()
+        self.conn.commit()
+        if rows == []:
+            return self.throw_error(1, "User error!\nGiven user were not found in database!")
+        usr_id = rows[0][0]
+        sql2 = "DELETE FROM sessions WHERE user_id = ?"
+        self.cursor.execute(sql2, [usr_id])
+        self.conn.commit()
+        return self.throw_success("Session deleted successfully!")
 
     def token_timestamp_check(self):
         sql = "SELECT user_id, creation_time FROM sessions"
