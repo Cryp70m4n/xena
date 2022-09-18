@@ -59,7 +59,7 @@ class authorisation():
         self.auth_logger.info(success)
         return 0
 
-    def generate_hash(self, password=None, salt=None):
+    def generate_hash(self, password=None):
         if password == None:
             return self.throw_error(1, "Password cannot be none!")
         try:
@@ -96,7 +96,7 @@ class authorisation():
         sql_check = "DELETE FROM sessions WHERE user_id = ?"
         self.cursor.execute(sql_check, [usr_id])
         self.conn.commit()
-        sql = "INSERT OR IGNORE INTO sessions(enc_key, nonce, user_id, creation_time) VALUES(?, ?, ?, ?)"
+        sql = "INSERT IGNORE INTO sessions(enc_key, nonce, user_id, creation_time) VALUES(?, ?, ?, ?)"
         self.cursor.execute(sql, (str(key)[0:][2:][:-1], nonce, usr_id, int(time.time()+self.token_duration)))
         self.conn.commit()
         return base64.b64encode(session)
@@ -244,7 +244,7 @@ class authorisation_api_calls():
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         if caller_permission_level < required_permission_level:
             return self.auth.throw_error(3, "You are not authorised to create new accounts!")
-        sql = "INSERT OR IGNORE INTO users(user, password, permission_level) VALUES(?, ?, ?)"
+        sql = "INSERT IGNORE INTO users(user, password, permission_level) VALUES(?, ?, ?)"
         try:
             perm_lvl = int(perm_lvl)
         except:

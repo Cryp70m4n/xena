@@ -79,7 +79,6 @@ def usr_passwd_auth(data=None):
     return session
 
 def validate(data=None):
-    print(data)
     if "user" not in data:
         return "username must be included inside json data"
     if "password" not in data:
@@ -125,7 +124,11 @@ def authentication():
     check = validate(data)
     if  check != True:
         return check
-    return usr_passwd_auth(data)
+
+    session = usr_passwd_auth(data)
+    response_data = {"token": session.decode('utf-8'), "response": "Works!"}
+    response = json.dumps(response_data)
+    return response
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
