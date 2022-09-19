@@ -1,6 +1,10 @@
-import threading
+import time
 from auth import authorisation
+
+
+auth = authorisation()
 def check_tokens():
-    threading.Timer(5.0, check_tokens).start()
+    time.sleep(3)
     auth.token_timestamp_check()
+    check_tokens()
 check_tokens()

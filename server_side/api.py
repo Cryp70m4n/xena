@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify, render_template, redirect
 from gevent.pywsgi import WSGIServer
-from auth import authorisation
 import binascii
 import string
 import json
 import threading
 
-
+from auth import authorisation
 import logger
 from scripts.shared import shared
 
