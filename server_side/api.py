@@ -75,6 +75,8 @@ def usr_passwd_auth(data=None):
     return session
 
 def usr_pass_validate(data=None):
+    if data == None:
+        return "Data cannot be None!"
     if "user" not in data:
         return "username must be included inside json data"
     if "password" not in data:
@@ -89,6 +91,23 @@ def usr_pass_validate(data=None):
             return "Password contains illegal chracters!"
     return True
 
+def admin_auth(data = None):
+    if data == None:
+        return "Data cannot be None!"
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if user not in data:
+        return "User must be included!"
+    if session not in data:
+        return "Session must be included!"
+    for char in data["user"]:
+        if char not in user_input_whitelist:
+            return False
+    if(permission_level_authentication(usr, session) == 4):
+        return True
+    return False
+
 
 
 #GET ENDPOINTS (GENERAL FRONTEND STUFF)
@@ -101,6 +120,21 @@ def index():
 def admin():
     log_info(request)
     return render_template('/admin.html')
+
+@app.route('/admin_dashbaord', methods=['GET'])
+def admin_dashboard():
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    check = admin_auth(data)
+    if  check != True:
+        return check
+    return render_template("/admin_dashbaord.html")
+
+
+def register():
+    log_info(request)
+    return render_template('/admin_dashbaord.html')
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -130,6 +164,16 @@ def authentication():
         response_data = {"response_status": "Session Error!"}
     response = json.dumps(response_data)
     return response
+
+@app.route('/admin_authentication', methods=['POST'])
+def admin_authentication():
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    check = admin_auth(data)
+    if  check != True:
+        return check
+    return redirect("/admin_dashbaord")
 
 @app.route('/logout', methods=['POST'])
 def logout():
