@@ -15,11 +15,15 @@ function submitform() {
 			response = xhr.responseText;
 		}
 		let response_obj = JSON.parse(response)
+		if(response_obj.token) {
 		let token = response_obj.token
 		let token_object = {'session': token}
-		console.log(token_object)
 		localStorage.setItem('token_object', JSON.stringify(token_object));
+		return "Success!"
+		}
+		return "Failure!"
 	}
 
 	xhr.send(JSON.stringify(data));
 }
+
