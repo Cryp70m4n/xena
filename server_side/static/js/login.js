@@ -16,10 +16,10 @@ function submitform() {
 		}
 		let response_obj = JSON.parse(response)
 		if(response_obj.token) {
-		let token = response_obj.token
-		let token_object = {'session': token}
-		localStorage.setItem('token_object', JSON.stringify(token_object));
-		return "Success!"
+			let token = response_obj.token
+			localStorage.setItem('session', JSON.stringify(token));
+			localStorage.setItem('username', JSON.stringify(usr));
+			return "Success!"
 		}
 		return "Failure!"
 	}

@@ -98,7 +98,7 @@ def usr_pass_validate(data=None):
 
 
 
-#ENDPOINTS
+#GET ENDPOINTS (GENERAL FRONTEND STUFF)
 @app.route('/', methods=['GET'])
 def index():
     log_info(request)
@@ -119,6 +119,8 @@ def register():
     log_info(request)
     return render_template('/register.html')
 
+
+#POST ENDPOINTS (LOGIC)
 @app.route('/authentication', methods=['POST'])
 def authentication():
     data = request.json
@@ -175,6 +177,7 @@ def whoami():
     if session_check(request) == True:
         return "Success!"
     return "False!"
+
 
 
 if (__name__ == "__main__"):
