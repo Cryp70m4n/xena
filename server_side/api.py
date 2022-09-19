@@ -123,12 +123,14 @@ def admin():
 
 @app.route('/admin_dashbaord', methods=['GET'])
 def admin_dashboard():
+    if data == None:
+        return "data cannot None"
     data = request.json
     data = jsonify(data)
     data = data.json
-    check = admin_auth(data)
-    if  check != True:
-        return check
+    admin_check = admin_auth(data)
+    if  admin_check != True:
+        return admin_check
     return render_template("/admin_dashbaord.html")
 
 
@@ -150,6 +152,8 @@ def register():
 #POST ENDPOINTS (LOGIC)
 @app.route('/authentication', methods=['POST'])
 def authentication():
+    if data == None:
+        return "data cannot None"
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -167,6 +171,8 @@ def authentication():
 
 @app.route('/admin_authentication', methods=['POST'])
 def admin_authentication():
+    if data == None:
+        return "data cannot None"
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -177,6 +183,8 @@ def admin_authentication():
 
 @app.route('/logout', methods=['POST'])
 def logout():
+    if data == None:
+        return "data cannot None"
     data = request.json
     data = jsonify(data)
     data = data.json
