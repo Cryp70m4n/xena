@@ -1,29 +1,28 @@
 function submitform() {
 	let xhr = new XMLHttpRequest();
-	let form = document.getElementById("user_password_form")
+	let form = document.getElementById("user_password_form");
 	xhr.open(form.method, form.action, true);
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-	let usr = document.getElementById("username").value
-	let passwd = document.getElementById("password").value    
+	let usr = document.getElementById("username").value;
+	let passwd = document.getElementById("password").value;    
 	let data = {
 		"user": usr,
-		"password": passwd,
+		"password": passwd
 	};
 	xhr.onload = function() {
-		let response = null
+		let response = null;
 		if (xhr.status >= 200 && xhr.status < 300) {
 			response = xhr.responseText;
 		}
-		let response_obj = JSON.parse(response)
+		let response_obj = JSON.parse(response);
 		if(response_obj.token) {
-			let token = response_obj.token
+			let token = response_obj.token;
 			localStorage.setItem('session', JSON.stringify(token));
 			localStorage.setItem('username', JSON.stringify(usr));
-			return "Success!"
+			return "Success!";
 		}
-		return "Failure!"
+		return "Failure!";
 	}
 
 	xhr.send(JSON.stringify(data));
 }
-

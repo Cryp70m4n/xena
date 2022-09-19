@@ -31,12 +31,6 @@ def log_info(request=None):
 
 auth = authorisation()
 
-#token checking/cleaning
-def check_tokens():
-    threading.Timer(5.0, check_tokens).start()
-    auth.token_timestamp_check()
-check_tokens()
-
 ip = "127.0.0.1"
 port = 4334
 app = Flask(__name__, template_folder='templates')
