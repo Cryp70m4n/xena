@@ -55,7 +55,15 @@ def session_check(data=None):
         return "username must be included inside json data"
     if "session" not in data:
         return "session must be included inside json data"
-    check = auth.session_authentication(data["user"], data["session"])
+    string = data["session"].replace('"', '')
+    print(string)
+    test = bytes(string, 'utf-8')
+    print(test)
+    user = data["user"]
+    test2 = user.replace('"', '')
+    print(test2)
+    check = auth.session_authentication(test2, test)
+    #check = auth.session_authentication(data["user"], data["session"])
     if check != "Session authorised!":
         return False
     return True
