@@ -49,11 +49,11 @@ password_input_whitelist = chars + up_chars + symbols + nums
 
 #AUTHENTICATION FUNCTIONS / LOGIC
 def session_check(data=None):
+    if data == None:
+        return "You must pass in some data"
     data = request.json
     data = jsonify(data)
     data = data.json
-    if data == None:
-        return "You must pass in some data"
     if "user" not in data:
         return "username must be included inside json data"
     if "session" not in data:
@@ -64,6 +64,8 @@ def session_check(data=None):
     return True
 
 def usr_passwd_auth(data=None):
+    if data == None:
+        return "You must pass in some data"
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -76,7 +78,10 @@ def usr_passwd_auth(data=None):
 
 def usr_pass_validate(data=None):
     if data == None:
-        return "Data cannot be None!"
+        return "You must pass in some data"
+    data = request.json
+    data = jsonify(data)
+    data = data.json
     if "user" not in data:
         return "username must be included inside json data"
     if "password" not in data:
@@ -91,9 +96,9 @@ def usr_pass_validate(data=None):
             return "Password contains illegal chracters!"
     return True
 
-def admin_auth(data = None):
+def permission_level_auth(data = None):
     if data == None:
-        return "Data cannot be None!"
+        return "You must pass in some data"
     data = request.json
     data = jsonify(data)
     data = data.json
@@ -118,25 +123,21 @@ def index():
 
 @app.route('/admin', methods=['GET'])
 def admin():
+    session = session_check(request)
+    if session != True:
+        return redirect("/")
     log_info(request)
     return render_template('/admin.html')
 
 @app.route('/admin_dashbaord', methods=['GET'])
 def admin_dashboard():
-    if data == None:
-        return "data cannot None"
-    data = request.json
-    data = jsonify(data)
-    data = data.json
-    admin_check = admin_auth(data)
-    if  admin_check != True:
-        return admin_check
+    session = session_check(request)
+    if session != True:
+        return redirect("/")
+    permission_level_check = permission_level_auth(request)
+    if  permission_level_check != True:
+        return redirect("/")
     return render_template("/admin_dashbaord.html")
-
-
-def register():
-    log_info(request)
-    return render_template('/admin_dashbaord.html')
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -152,16 +153,11 @@ def register():
 #POST ENDPOINTS (LOGIC)
 @app.route('/authentication', methods=['POST'])
 def authentication():
-    if data == None:
-        return "data cannot None"
-    data = request.json
-    data = jsonify(data)
-    data = data.json
-    check = usr_pass_validate(data)
+    check = usr_pass_validate(request)
     if  check != True:
         return check
 
-    session = usr_passwd_auth(data)
+    session = usr_passwd_auth(request)
     try:
         response_data = {"token": session.decode('utf-8'), "response_status": "Success!"}
     except:
@@ -169,34 +165,13 @@ def authentication():
     response = json.dumps(response_data)
     return response
 
-@app.route('/admin_authentication', methods=['POST'])
-def admin_authentication():
-    if data == None:
-        return "data cannot None"
-    data = request.json
-    data = jsonify(data)
-    data = data.json
-    check = admin_auth(data)
-    if  check != True:
-        return check
-    return redirect("/admin_dashbaord")
-
 @app.route('/logout', methods=['POST'])
 def logout():
-    if data == None:
-        return "data cannot None"
-    data = request.json
-    data = jsonify(data)
-    data = data.json
-    if user not in data:
-        return "User must be included!"
-    if session not in data:
-        return "Session must be included!"
-    for char in data["user"]:
-        if char not in user_input_whitelist:
-            return False
-    
-    return auth.delete_session(user, session)
+    session = session_check(request)
+    if session != True:
+        return False
+    auth.delete_session(user, session)
+    return redirect("/")
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():

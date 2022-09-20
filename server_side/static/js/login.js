@@ -1,3 +1,12 @@
+function isJsonObject(strData) {
+    try {
+        JSON.parse(strData);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 function submitform() {
 	let xhr = new XMLHttpRequest();
 	let form = document.getElementById("user_password_form");
@@ -14,6 +23,8 @@ function submitform() {
 		if (xhr.status >= 200 && xhr.status < 300) {
 			response = xhr.responseText;
 		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
 		let response_obj = JSON.parse(response);
 		if(response_obj.token) {
 			let token = response_obj.token;
