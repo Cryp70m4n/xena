@@ -2,3 +2,13 @@
 20-Sep-22 19:36:25 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
 20-Sep-22 19:36:55 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
 20-Sep-22 19:37:06 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 21:55:54 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 21:56:17 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 21:58:27 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:01:30 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:03:33 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:03:56 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:04:18 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:08:56 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:09:47 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+20-Sep-22 22:11:05 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!

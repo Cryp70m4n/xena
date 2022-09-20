@@ -121,21 +121,7 @@ def index():
 @app.route('/admin', methods=['GET'])
 def admin():
     log_info(request)
-    session = session_check(request)
-    if session != True:
-        return redirect("/")
     return render_template('/admin.html')
-
-@app.route('/admin_dashboard', methods=['POST'])
-def admin_dashboard():
-    log_info(request)
-    session = session_check(request)
-    if session != True:
-        return redirect("/")
-    permission_level_check = permission_level_auth(request)
-    if  permission_level_check != True:
-        return redirect("/")
-    return render_template("/admin_dashboard.html")
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -152,9 +138,11 @@ def register():
 @app.route('/authentication', methods=['POST'])
 def authentication():
     log_info(request)
+    fail_response_data = {"response_stauts": "You used illegal characters!"}
+    fail_response = json.dumps(fail_response_data)
     check = usr_pass_validate(request)
     if  check != True:
-        return check
+        return fail_response
 
     session = usr_passwd_auth(request)
     try:
@@ -164,12 +152,25 @@ def authentication():
     response = json.dumps(response_data)
     return response
 
+@app.route('/admin_authentication', methods=['POST'])
+def admin_authentication():
+    log_info(request)
+    fail_response_data = {"response_stauts": "You are not an admin!"}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_response
+    permission_level_check = permission_level_auth(request)
+    if  permission_level_check != True:
+        return fail_response
+    return render_template("/admin_dashboard.html")
+
 @app.route('/logout', methods=['POST'])
 def logout():
     log_info(request)
     session = session_check(request)
     if session != True:
-        return False
+        return "False"
     auth.delete_session(user, session)
     return redirect("/")
 

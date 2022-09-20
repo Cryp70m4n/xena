@@ -9,8 +9,11 @@
 	</head>
 
 	<body>
+		<h class="username" id="username">username from js here</h>
 		<p class="title" id="title">ADMIN PANEL</p>
-
+		<form action="/admin_authentication" method="POST" id="access">
+			<input value="Submit" type="button" onclick="submitform()">
+		</form>
 		<script src="/static/js/admin.js"></script>
 	</body>
 </html>

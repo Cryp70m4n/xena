@@ -29,7 +29,7 @@ function submitform() {
 		if(response_obj.token) {
 			let token = response_obj.token;
 			localStorage.setItem('session', JSON.stringify(token));
-			localStorage.setItem('username', JSON.stringify(usr));
+			localStorage.setItem('user', JSON.stringify(usr));
 			return "Success!";
 		}
 		return "Failure!";
