@@ -22,10 +22,7 @@ def log_info(request=None):
         return 1
 
     ip = request.remote_addr
-    data = request.json
-    data = jsonify(data)
-    data = str(data.json)
-    api_logger.info(ip + "|" + data + "|" + request.method)
+    api_logger.info(ip + "|" + request.method)
     return 0
 
 auth = authorisation()
@@ -115,7 +112,7 @@ def permission_level_auth(data = None):
 
 
 
-#GET ENDPOINTS (GENERAL FRONTEND STUFF)
+#TEMPLATE ENDPOINTS (GENERAL FRONTEND STUFF)
 @app.route('/', methods=['GET'])
 def index():
     log_info(request)
@@ -123,21 +120,22 @@ def index():
 
 @app.route('/admin', methods=['GET'])
 def admin():
+    log_info(request)
     session = session_check(request)
     if session != True:
         return redirect("/")
-    log_info(request)
     return render_template('/admin.html')
 
-@app.route('/admin_dashbaord', methods=['GET'])
+@app.route('/admin_dashboard', methods=['POST'])
 def admin_dashboard():
+    log_info(request)
     session = session_check(request)
     if session != True:
         return redirect("/")
     permission_level_check = permission_level_auth(request)
     if  permission_level_check != True:
         return redirect("/")
-    return render_template("/admin_dashbaord.html")
+    return render_template("/admin_dashboard.html")
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -150,9 +148,10 @@ def register():
     return render_template('/register.html')
 
 
-#POST ENDPOINTS (LOGIC)
+#LOGICAL ENDPOINTS (GENERAL AUTHENTICATION STUFF)
 @app.route('/authentication', methods=['POST'])
 def authentication():
+    log_info(request)
     check = usr_pass_validate(request)
     if  check != True:
         return check
@@ -167,6 +166,7 @@ def authentication():
 
 @app.route('/logout', methods=['POST'])
 def logout():
+    log_info(request)
     session = session_check(request)
     if session != True:
         return False
@@ -175,6 +175,7 @@ def logout():
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
+    log_info(request)
     session = session_check(request)
     if session != True:
         return redirect('/')
@@ -182,6 +183,7 @@ def read_shared():
 
 @app.route('/api/download_shared', methods=['POST'])
 def download_shared():
+    log_info(request)
     session = session_check(request)
     if session !=  True:
         return redirect('/')
@@ -194,6 +196,7 @@ def download_shared():
 
 @app.route('/api/whoami', methods=['POST']) 
 def whoami():
+    log_info(request)
     if session_check(request) == True:
         return "Success!"
     return "False!"

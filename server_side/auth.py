@@ -101,17 +101,6 @@ class authorisation():
         self.conn.commit()
         return base64.b64encode(session)
 
-    def permission_level_authentication(self, usr=None, session=None):
-        sql = "SELECT permission_level FROM users WHERE user = ?"
-        permission_level = 0
-        if self.session_authentication(usr, session) != 0:
-            return permission_level
-        self.cursor.execute(sql, [usr])
-        rows = self.cursor.fetchall()
-        self.conn.commit()
-        permission_level = int(rows[0][0])
-        return permission_level
-
     def user_password_authentication(self, usr=None, passwd=None):
         if usr == None or passwd == None:
             return self.throw_error(2, "User and/or Password can't be None!")
@@ -191,6 +180,17 @@ class authorisation():
         self.cursor.execute(sql2, [usr_id])
         self.conn.commit()
         return self.throw_success("Session deleted successfully!")
+
+    def permission_level_authentication(self, usr=None, session=None):
+        sql = "SELECT permission_level FROM users WHERE user = ?"
+        permission_level = 0
+        if self.session_authentication(usr, session) != 0:
+            return permission_level
+        self.cursor.execute(sql, [usr])
+        rows = self.cursor.fetchall()
+        self.conn.commit()
+        permission_level = int(rows[0][0])
+        return permission_level
 
     def token_timestamp_check(self):
         sql = "SELECT user_id, creation_time FROM sessions"
