@@ -44,3 +44,14 @@
 21-Sep-22 19:06:10 - WARNING - function:session_authentication | error_type:Token error! | error:Token expired!
 21-Sep-22 19:06:42 - ERROR - function:session_authentication | error_type:Key error! | error:Key for given ID were not found in database!
 21-Sep-22 19:10:02 - ERROR - function:session_authentication | error_type:Key error! | error:Key for given ID were not found in database!
+21-Sep-22 20:39:16 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:39:16 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:39:17 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:39:17 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:39:17 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:39:17 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:40:24 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:40:24 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:40:25 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:40:25 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 20:40:26 - WARNING - function:user_password_authentication | error_type:User error! | error:Given user were not found in database!

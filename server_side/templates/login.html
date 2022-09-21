@@ -1,20 +1,29 @@
-<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Xena systems</title>
-		<link rel="stylesheet" href="/static/styles/login_styles.css">
-	</head>
-	<body>
-		<p class="title" id="title">LOG INTO XENA</p>
-		<form action="/authentication" method="POST" id="user_password_form">
-			<input type="text" placeholder="Username" id="username">
-			<input type="password" placeholder="Password" id="password">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Xena systems</title>
+        <link rel="stylesheet" href="/static/styles/login_styles.css">
+    </head>
+    <body>
+        <p class="title" id="title">LOG INTO XENA</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 
-			<input value="Submit" type="button" onclick="submitform()">
-		</form>
-		<script src="/static/js/login.js"></script>
-	</body>
+        <form action="/authentication" method="POST" class="user_password_form" id="user_password_form">
+            <input type="text" placeholder="Username" id="username">
+            <br>
+            <br>
+            <input type="password" placeholder="Password" id="password">
+            <br>
+            <br>
+            <button type="button" class="form_button" onclick="submitform()">Log in</button>
+
+        </form>
+        <script src="/static/js/login.js"></script>
+    </body>
 </html>
