@@ -147,7 +147,7 @@ def register():
 @app.route('/authentication', methods=['POST'])
 def authentication():
     log_info(request)
-    fail_response_data = {"response_stauts": "You used illegal characters!"}
+    fail_response_data = {"response_stauts": "You used illegal characters!", "response_code": 1}
     fail_response = json.dumps(fail_response_data)
     check = usr_pass_validate(request)
     if  check != True:
@@ -155,16 +155,16 @@ def authentication():
 
     session = usr_passwd_auth(request)
     try:
-        response_data = {"token": session.decode('utf-8'), "response_status": "Success!"}
+        response_data = {"token": session.decode('utf-8'), "response_status": "Success!", "response_code": 0}
     except:
-        response_data = {"response_status": "Session Error!"}
+        response_data = {"response_status": "Session Error!", "response_code": 1}
     response = json.dumps(response_data)
     return response
 
 @app.route('/admin_authentication', methods=['POST'])
 def admin_authentication():
     log_info(request)
-    fail_response_data = {"response_stauts": "You are not an admin!"}
+    fail_response_data = {"response_stauts": "You are not an admin!", "response_code": 1}
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:

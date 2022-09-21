@@ -144,18 +144,17 @@ class authorisation():
         except:
             return self.throw_error(4, "Unexpected error occured while trying to decrypt your session!\nPlease try again!")
         token = str(token)[0:][2:][:-1].split(" ")
+        sql_remove = "DELETE FROM sessions WHERE user_id = ?"
         try:
             token_user = token[0]
             token_nonce = token[1]
         except:
             return self.throw_error(1, "Token error!\nInvalid token!")
         if token_user != usr:
-            sql_remove = "DELETE FROM sessions WHERE user_id = ?"
             self.cursor.execute(sql_remove, [usr_id])
             self.conn.commit()
             return self.throw_error(1, "Token error!\nInvalid user!")
         if token_nonce != nonce:
-            sql_remove = "DELETE FROM sessions WHERE user_id = ?"
             self.cursor.execute(sql_remove, [usr_id])
             self.conn.commit()
             return self.throw_error(1, "Token error!\nInvalid nonce!")
