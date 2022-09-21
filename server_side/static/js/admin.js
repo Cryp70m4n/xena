@@ -14,8 +14,6 @@ function submitform() {
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	let user = localStorage.getItem('user')
 	let session = localStorage.getItem('session')
-	console.log(user)
-	console.log(session)
 	let data = {
 		"user": user,
 		"session": session
@@ -25,10 +23,14 @@ function submitform() {
 		if (xhr.status >= 200 && xhr.status < 300) {
 			response = xhr.responseText;
 		}
-		console.log(response)
+		if(response.status_code != 0)
+		{
+			return "Failure!"
+		}
         document.open();
         document.write(response);
         document.close();
+        return "Success!"
 	}
 
 	xhr.send(JSON.stringify(data));

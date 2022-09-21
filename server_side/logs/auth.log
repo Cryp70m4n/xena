@@ -43,3 +43,4 @@
 21-Sep-22 16:41:07 - INFO - Session authorised!
 21-Sep-22 19:06:10 - WARNING - function:session_authentication | error_type:Token error! | error:Token expired!
 21-Sep-22 19:06:42 - ERROR - function:session_authentication | error_type:Key error! | error:Key for given ID were not found in database!
+21-Sep-22 19:10:02 - ERROR - function:session_authentication | error_type:Key error! | error:Key for given ID were not found in database!

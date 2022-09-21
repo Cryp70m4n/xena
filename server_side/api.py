@@ -55,6 +55,9 @@ def session_check(data=None):
         return "username must be included inside json data"
     if "session" not in data:
         return "session must be included inside json data"
+    if data["user"] == None or data["session"] == None:
+        return "Session/user cannot be None!"
+
     session_string = data["session"].replace('"', '')
     session = str(session_string)
     user = data["user"]
@@ -74,6 +77,8 @@ def usr_passwd_auth(data=None):
         return "username must be included inside json data"
     if "password" not in data:
         return "password must be included inside json data"
+    if data["user"] == None or data["password"] == None:
+        return "Password/user cannot be None!"
     session = auth.user_password_authentication(data["user"], data["password"])
     return session
 
@@ -87,6 +92,8 @@ def usr_pass_validate(data=None):
         return "username must be included inside json data"
     if "password" not in data:
         return "password must be included inside json data"
+    if data["user"] == None or data["password"] == None:
+        return "Password/user cannot be None!"
     user = data["user"]
     password = data["password"]
     for char in user:
@@ -107,6 +114,8 @@ def permission_level_auth(data = None):
         return "User must be included!"
     if "session" not in data:
         return "Session must be included!"
+    if data["user"] == None or data["session"] == None:
+        return "Session/user cannot be None!"
     session_string = data["session"].replace('"', '')
     session = str(session_string)
     user = data["user"]
