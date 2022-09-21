@@ -57,7 +57,7 @@ class authorisation():
 
     def throw_success(self, success=None):
         self.auth_logger.info(success)
-        return 0
+        return True
 
     def generate_hash(self, password=None):
         if password == None:
@@ -167,7 +167,7 @@ class authorisation():
 
     def delete_session(self, usr=None, session=None):
         validate = self.session_authentication(usr, session)
-        if  validate != 0:
+        if  validate != True:
             return validate
         sql = "SELECT id FROM users WHERE user = ?"
         self.cursor.execute(sql, [usr])
@@ -184,7 +184,7 @@ class authorisation():
     def permission_level_authentication(self, usr=None, session=None):
         sql = "SELECT permission_level FROM users WHERE user = ?"
         permission_level = 0
-        if self.session_authentication(usr, session) != 0:
+        if self.session_authentication(usr, session) != True:
             return permission_level
         self.cursor.execute(sql, [usr])
         rows = self.cursor.fetchall()
@@ -226,7 +226,7 @@ class authorisation_api_calls():
         return self.auth.throw_success("Input authorised!")
 
     def create_account(self, caller_usr=None, caller_session=None, usr=None, passwd=None, perm_lvl=None):
-        if self.auth.session_authentication(caller_usr, caller_session) != 0:
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         if passwd == None:
             return self.auth.throw_error(2, "Argument error!\nPassword cannot be None!")
@@ -235,10 +235,10 @@ class authorisation_api_calls():
         if perm_lvl == None:
             return self.auth.throw_error(2, "Argument error!\nPermission level cannot be None!")
         passwd_check = self.input_validation(passwd)
-        if passwd_check != 0:
+        if passwd_check != True:
             return self.auth.throw_error(1, "Input error!\nPassword contains characters which aren't allowed!")
         usr_check = self.input_validation(usr)
-        if usr_check != 0:
+        if usr_check != True:
             return self.auth.throw_error(1, "Input error!\nUser contains characters which aren't allowed!")
         required_permission_level = 3
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
@@ -257,7 +257,7 @@ class authorisation_api_calls():
         self.cursor.execute(usr_check_sql, [usr])
         usr_exist_check = self.cursor.fetchall()
         self.conn.commit()
-        if usr_exist_check[0][0] != 0:
+        if usr_exist_check[0][0] != True:
             return self.auth.throw_error(1, "Database error!\nUser already exists in database!")
         password = self.generate_hash(passwd)
         self.cursor.execute(sql, (usr, password, perm_lvl))
@@ -265,7 +265,7 @@ class authorisation_api_calls():
         return self.auth.throw_success("Account created successfully!")
 
     def delete_account(self, caller_usr=None, caller_session=None, usr=None):
-        if self.auth.session_authentication(caller_usr, caller_session) != 0:
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         if usr == None:
             return self.auth.throw_error(2, "Argument error!\nUser cannot be None!")
@@ -288,16 +288,16 @@ class authorisation_api_calls():
         return self.auth.throw_success("Account deleted successfully!")
 
     def change_password(self, caller_usr=None, caller_session=None, passwd=None, usr=None):
-        if self.auth.session_authentication(caller_usr, caller_session) != 0:
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         if passwd == None:
             return self.auth.throw_error(2, "Argument error!\nPassword cannot be None!")
         passwd_check = self.input_validation(passwd)
-        if passwd_check != 0:
+        if passwd_check != True:
             return self.auth.throw_error(1, "Input error!\nPassword contains characters which aren't allowed!")
         if usr != None:
             usr_check = self.input_validation(usr)
-            if usr_check != 0:
+            if usr_check != True:
                 return self.auth.throw_error(1, "Input error\nUser contains characters which aren't allowed!")
         required_permission_level = 3
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
@@ -327,7 +327,7 @@ class authorisation_api_calls():
         return self.auth.throw_success("Password changed successfully!")
 
     def change_permission_level(self, caller_usr=None, caller_session=None, usr=None, perm_lvl=0):
-        if self.auth.session_authentication(caller_usr, caller_session) != 0:
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         if usr == None:
             return self.auth.throw_error(2, "Argument error!\nUser cannot be None!")
@@ -336,7 +336,7 @@ class authorisation_api_calls():
         except:
             return self.auth.throw_error(2, "Argument error!\nPermision level must be an number between 1 and 4!")
         usr_check = self.input_validation(usr)
-        if usr_check != 0:
+        if usr_check != True:
             return self.auth.throw_error(1, "Input error\nUser contains characters which aren't allowed!")
         if permission_level > 4 or permission_level < 1:
             return self.auth.throw_error(2, "Argument error!\nPermission level must be an number between 1 and 4!")
@@ -359,7 +359,7 @@ class authorisation_api_calls():
         return self.auth.throw_success("Permission level changed successfully!")
 
     def get_users(self, caller_usr=None, caller_session=None):
-        if self.auth.session_authentication(caller_usr, caller_session) != 0:
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         required_permission_level = 4
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)

@@ -20,3 +20,24 @@
 20-Sep-22 22:28:23 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
 20-Sep-22 22:28:44 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
 20-Sep-22 22:28:54 - WARNING - function:session_authentication | error_type:User error! | error:Given user were not found in database!
+21-Sep-22 16:21:06 - WARNING - function:session_authentication | error_type:Token error! | error:Invalid token!
+21-Sep-22 16:29:26 - INFO - Session authorised!
+21-Sep-22 16:30:23 - INFO - Session authorised!
+21-Sep-22 16:31:24 - INFO - Session authorised!
+21-Sep-22 16:32:42 - INFO - Session authorised!
+21-Sep-22 16:32:56 - INFO - Session authorised!
+21-Sep-22 16:33:42 - INFO - Session authorised!
+21-Sep-22 16:34:46 - INFO - Session authorised!
+21-Sep-22 16:34:57 - INFO - Session authorised!
+21-Sep-22 16:35:12 - INFO - Session authorised!
+21-Sep-22 16:36:23 - INFO - Session authorised!
+21-Sep-22 16:37:49 - INFO - Session authorised!
+21-Sep-22 16:37:58 - INFO - Session authorised!
+21-Sep-22 16:38:53 - INFO - Session authorised!
+21-Sep-22 16:39:07 - INFO - Session authorised!
+21-Sep-22 16:39:17 - INFO - Session authorised!
+21-Sep-22 16:39:17 - INFO - Session authorised!
+21-Sep-22 16:40:27 - INFO - Session authorised!
+21-Sep-22 16:40:27 - INFO - Session authorised!
+21-Sep-22 16:41:07 - INFO - Session authorised!
+21-Sep-22 16:41:07 - INFO - Session authorised!

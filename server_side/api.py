@@ -55,16 +55,12 @@ def session_check(data=None):
         return "username must be included inside json data"
     if "session" not in data:
         return "session must be included inside json data"
-    string = data["session"].replace('"', '')
-    print(string)
-    test = bytes(string, 'utf-8')
-    print(test)
+    session_string = data["session"].replace('"', '')
+    session = str(session_string)
     user = data["user"]
-    test2 = user.replace('"', '')
-    print(test2)
-    check = auth.session_authentication(test2, test)
-    #check = auth.session_authentication(data["user"], data["session"])
-    if check != "Session authorised!":
+    user = user.replace('"', '')
+    check = auth.session_authentication(user, session)
+    if check != True:
         return False
     return True
 
@@ -107,14 +103,19 @@ def permission_level_auth(data = None):
     data = request.json
     data = jsonify(data)
     data = data.json
-    if user not in data:
+    if "user" not in data:
         return "User must be included!"
-    if session not in data:
+    if "session" not in data:
         return "Session must be included!"
-    for char in data["user"]:
+    session_string = data["session"].replace('"', '')
+    session = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    for char in user:
         if char not in user_input_whitelist:
             return False
-    if(permission_level_authentication(usr, session) == 4):
+    perm_lvl = auth.permission_level_authentication(user, session)
+    if(perm_lvl == 4):
         return True
     return False
 
