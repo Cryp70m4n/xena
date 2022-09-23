@@ -181,6 +181,7 @@ def admin_authentication():
     permission_level_check = permission_level_auth(request)
     if  permission_level_check != True:
         return fail_response
+    print("U gasu sam")
     return render_template("/admin_dashboard.html")
 
 @app.route('/logout', methods=['POST'])

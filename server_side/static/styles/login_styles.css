@@ -22,15 +22,24 @@ body {
   text-align: center;
 }
 
+.user_password_form .username {
+  font-size: 16px;
+}
+
+.user_password_form .password {
+  font-size: 16px;
+}
+
 .user_password_form .form_button {
   background: #262c5b;
   font-size: 24px;
   color: #fff;
+  border-color: white;
   border-radius: 18px;
   transition: transform 0.3s ease;
 }
 
-.user_password_form .btn-1::after, .btn-1::before {
+.user_password_form .form_button::after, .form_button::before {
   content: "";
   position: absolute;
   opacity: 0.3;
