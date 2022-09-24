@@ -7,7 +7,7 @@ import string
 
 
 import logger
-from load_balancing import directory_balance_controller
+from load_balancing import directory_balancing_controller
 
 """
 	TODO:
@@ -82,6 +82,7 @@ class shared():
 		if i > 1:
 			return "Invalid filename!"
 		#base64 gzip decompress(probably) and rb and then wb
+		#check if file already exist in directory try other one use load balancer to create new dirs if old ones are full
 
 	def __del__(self):
 		self.conn.close()
