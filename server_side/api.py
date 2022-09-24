@@ -26,6 +26,7 @@ def log_info(request=None):
     return 0
 
 auth = authorisation()
+shared = shared()
 
 ip = "127.0.0.1"
 port = 4334
@@ -224,6 +225,7 @@ def whoami():
 
 
 if (__name__ == "__main__"):
+    print(shared.download_shared('q.jpeg'))
     #app.run(port=port, debug=False,use_reloader=False)
     http_server = WSGIServer((ip, port), app)
     print(f"Starting Xena systems on http://{ip}:{port}")
