@@ -8,6 +8,7 @@ import binascii
 import pyaes
 import base64
 import inspect
+import string
 
 import logger
 
@@ -372,8 +373,33 @@ class authorisation_api_calls():
             users.append(row[0])
         return users
 
-    def create_vault(self, caller_usr=None, caller_session=None, target_user=None, vault_name=None):
-        return "vault"
+    def create_vault(self, caller_usr=None, caller_session=None, vault_name=None, vault_owner=None):
+        if vault_name == None or vault_owner == None:
+            return self.auth.throw_error(2, "Vault name or vault owner cannot be None!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        required_permission_level = 3
+        caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
+        if caller_permission_level < required_permission_level:
+            return self.auth.throw_error(3, "You are not authorised to change password to other users!")
+        users = self.get_users(caller_usr, caller_session)
+        if vault_owner not in users:
+            return self.auth.throw_error(2, "User not found in database!")
+        chars = list(string.ascii_lowercase)
+        nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        vault_name_whitelist = chars+nums
+        for char in vault_name:
+            if char not in vault_name_whitelist:
+                return self.auth.throw_error(2, "Vault name contains illegal characters!")
+
+        #VAULT NAME DUPLICATE PER USER CHECK
+
+        sql = "INSERT IGNORE INTO vault(vault_name, vault_owner) VALUES(? ?)"
+        self.cursor.execute(sql, [vault_name, vault_owner])
+        self.conn.commit()
+        return self.auth.throw_success("Vault created successfully!")
+    def delete_vault(self, caller_usr=None, caller_session=None, vault_name=None, vault_owner=None):
+        return "delete vault"
     #add delete vault function minimal permission level to call create and delete vault 3 or 4 (will think about it)
 
     def __del__(self):
