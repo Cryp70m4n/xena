@@ -23,7 +23,7 @@ function submitform() {
 		if (xhr.status >= 200 && xhr.status < 300) {
 			response = xhr.responseText;
 		}
-		if(response.status_code != 0)
+		if(isJsonObject(response))
 		{
 			return "Failure!"
 		}

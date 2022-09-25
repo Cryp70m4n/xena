@@ -157,7 +157,7 @@ def register():
 @app.route('/authentication', methods=['POST'])
 def authentication():
     log_info(request)
-    fail_response_data = {"response_stauts": "You used illegal characters!", "response_code": 1}
+    fail_response_data = {"response_status": "You used illegal characters!", "response_code": 1}
     fail_response = json.dumps(fail_response_data)
     check = usr_pass_validate(request)
     if  check != True:
@@ -174,7 +174,7 @@ def authentication():
 @app.route('/admin_authentication', methods=['POST'])
 def admin_authentication():
     log_info(request)
-    fail_response_data = {"response_stauts": "You are not an admin!", "response_code": 1}
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
@@ -182,7 +182,6 @@ def admin_authentication():
     permission_level_check = permission_level_auth(request)
     if  permission_level_check != True:
         return fail_response
-    print("U gasu sam")
     return render_template("/admin_dashboard.html")
 
 @app.route('/logout', methods=['POST'])

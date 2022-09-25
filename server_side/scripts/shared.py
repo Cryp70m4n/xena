@@ -7,7 +7,7 @@ import string
 
 
 import logger
-from load_balancing import directory_balancing_controller
+
 
 """
 	TODO:
@@ -37,44 +37,40 @@ class shared():
 		self.cursor = self.conn.cursor()
 
 	def read_shared(self):
-		sql = "SELECT filename, directory FROM shared"
+		sql = "SELECT original_filename, id filename FROM shared"
 		self.cursor.execute(sql)
 		rows = self.cursor.fetchall()
 		self.conn.commit()
 		files = {}
+		file_ids = {}
 		for row in rows:
 			files[row[0]] = row[1]
-		return files
+			file_ids[row[0]] = row[2]
+		return [files, file_ids]
 
 	def download_shared(self, target_file=None):
 		if target_file == None:
 			return "Target file cannot be none!"
 		whitelist = []
 		items = self.read_shared()
+		items = items[0]
 		for item in items:
-			whitelist.append(item) #self.read_shared() edit that it only appends filenames not file directories 
+			whitelist.append(item)
 		if target_file not in whitelist:
 			return "Target file couldn't be found in shared folder"
-		i = 0
-		for ch in target_file:
-			if ch == ".":
-				i+=1
-			if ch not in insert_whitelist:
-				return "Filename contains illegal characters!"
-		if i > 1:
-			return "Invalid filename!"
-		file_directory = items[target_file]
-		target_file = "shared/" + file_directory + "/" + target_file
+		target_file = "shared/" + target_file
 		file_data = codecs.open(target_file, 'rb').read()
 		compressed = gzip.compress(file_data)
 		compressed_data = base64.b64encode(compressed)
 		return compressed_data
 
-	def insert_shared(self, target_file=None):
-		if target_file == None:
+	def insert_shared(self, file=None):
+		filename=file[0]
+		file_data=file[1]
+		if filename == None or file_data == None:
 			return "Target file cannot be none!"
 		i = 0
-		for ch in target_file:
+		for ch in filename:
 			if ch == ".":
 				i+=1
 			if ch not in insert_whitelist:
@@ -82,7 +78,6 @@ class shared():
 		if i > 1:
 			return "Invalid filename!"
 		#base64 gzip decompress(probably) and rb and then wb
-		#check if file already exist in directory try other one use load balancer to create new dirs if old ones are full
 
 	def __del__(self):
 		self.conn.close()

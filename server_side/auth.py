@@ -372,5 +372,9 @@ class authorisation_api_calls():
             users.append(row[0])
         return users
 
+    def create_vault(self, caller_usr=None, caller_session=None, target_user=None, vault_name=None):
+        return "vault"
+    #add delete vault function minimal permission level to call create and delete vault 3 or 4 (will think about it)
+
     def __del__(self):
         self.conn.close()
