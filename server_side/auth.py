@@ -391,9 +391,6 @@ class authorisation_api_calls():
         for char in vault_name:
             if char not in vault_name_whitelist:
                 return self.auth.throw_error(2, "Vault name contains illegal characters!")
-
-        #VAULT NAME DUPLICATE PER USER CHECK
-
         sql = "INSERT IGNORE INTO vault(vault_name, vault_owner) VALUES(? ?)"
         self.cursor.execute(sql, [vault_name, vault_owner])
         self.conn.commit()
