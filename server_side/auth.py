@@ -381,7 +381,7 @@ class authorisation_api_calls():
         required_permission_level = 3
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         if caller_permission_level < required_permission_level:
-            return self.auth.throw_error(3, "You are not authorised to change password to other users!")
+            return self.auth.throw_error(3, "You are not authorised to create vault for users!")
         users = self.get_users(caller_usr, caller_session)
         if vault_owner not in users:
             return self.auth.throw_error(2, "User not found in database!")
@@ -391,13 +391,26 @@ class authorisation_api_calls():
         for char in vault_name:
             if char not in vault_name_whitelist:
                 return self.auth.throw_error(2, "Vault name contains illegal characters!")
-        sql = "INSERT IGNORE INTO vault(vault_name, vault_owner) VALUES(? ?)"
+        sql = "INSERT IGNORE INTO vaults(vault_name, vault_owner) VALUES(?, ?)"
         self.cursor.execute(sql, [vault_name, vault_owner])
         self.conn.commit()
         return self.auth.throw_success("Vault created successfully!")
     def delete_vault(self, caller_usr=None, caller_session=None, vault_name=None, vault_owner=None):
-        return "delete vault"
-    #add delete vault function minimal permission level to call create and delete vault 3 or 4 (will think about it)
+        if vault_name == None or vault_owner == None:
+            return self.auth.throw_error(2, "Vault name or vault owner cannot be None!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        required_permission_level = 3
+        caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
+        if caller_permission_level < required_permission_level:
+            return self.auth.throw_error(3, "You are not authorised to delete vault of other users!")
+        users = self.get_users(caller_usr, caller_session)
+        if vault_owner not in users:
+            return self.auth.throw_error(2, "User not found in database!")
+        sql = "DELETE FROM vaults WHERE vault_name=? AND vault_owner=?"
+        self.cursor.execute(sql, [vault_name, vault_owner])
+        self.conn.commit()
+        return self.auth.throw_success("Vault deleted successfully!")
 
     def __del__(self):
         self.conn.close()
