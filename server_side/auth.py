@@ -212,8 +212,17 @@ class authorisation():
 
 class authorisation_api_calls():
     def __init__(self):
-        self.db = "xena.db"
-        self.conn = sqlite3.connect(self.db)
+        self.db_user = "root"
+        self.db_password = "S3curE123#!"
+        self.db_host = "127.0.0.1"
+        self.db_port = 3306
+        self.conn = mariadb.connect(
+            user=self.db_user,
+            password=self.db_password,
+            host=self.db_host,
+            port=self.db_port,
+            database=self.db
+        )
         self.cursor = self.conn.cursor()
         self.allowed_characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
                                    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -395,6 +404,7 @@ class authorisation_api_calls():
         self.cursor.execute(sql, [vault_name, vault_owner])
         self.conn.commit()
         return self.auth.throw_success("Vault created successfully!")
+
     def delete_vault(self, caller_usr=None, caller_session=None, vault_name=None, vault_owner=None):
         if vault_name == None or vault_owner == None:
             return self.auth.throw_error(2, "Vault name or vault owner cannot be None!")
