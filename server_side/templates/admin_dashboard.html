@@ -1,15 +1,70 @@
-<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Xena systems</title>
-		<link rel="stylesheet" href="/static/styles/admin_dashboard.css">
-	</head>
-	<body>
-		<p class="title" id="title">ADMIN DASHBOARD</p>
-		<p class="congs" id="congs">CONGS IT WORKS!</p>
-		<script src="/static/js/admin_dashboard.js"></script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = "/static/styles/admin_dashboard_styles.css">
+    <title>PAZKAL</title>
+</head>
+<body>
+    <div class = "mainBox">
+        <p class = "titleContent">PAZKAL</p>
+        <button class = "boxBtns" onclick = "accountRequests()" id="arBtn"><a href = "#">ACCOUNT REQUESTS</a></button>
+        <button class = "boxBtns" onclick = "deleteAccount()" id="daBtn"><a href = "#">DELETE ACCOUNT</a></button>
+        <button class = "boxBtns" onclick = "createVault()" id="cvBtn"><a href = "#">CREATE VAULT</a></button>
+        <button class = "boxBtns" onclick = "deleteVault()" id="dvBtn"><a href = "#">DELETE VAULT</a></button>
+        <button class = "boxBtns" onclick = "changePermissionLevel()" id="cplBtn"><a href = "#">CHANGE PERMISSION LEVEL</a></button>
+    </div>
+
+    <div id="arModal" class="modal">
+        <form class = "arModalContent">
+            <span class="close">&times;</span>
+            <p class = "modalTitle">ACCOUNT REQUESTS</p>
+            <input class = "modalInput" placeholder = "content">
+            <input class = "modalInput" placeholder = "content">
+            <button class = "submitBtn">SUBMIT</button>
+        </form>
+    </div>
+
+    <div id="daModal" class="modal">
+        <form class="daModalContent">
+            <span class="close">&times;</span>
+            <p class = "modalTitle">DELETE ACCOUNT</p>
+            <input class = "modalInput" placeholder = "content">
+            <input class = "modalInput" placeholder = "content">
+            <button class = "submitBtn">SUBMIT</button>
+        </form>
+    </div>
+
+    <div id="cvModal" class="modal">
+        <form class="arModalContent" action="/create_vault" method="POST" id="create_vault">
+            <span class="close">&times;</span>
+            <p class = "modalTitle">CREATE VAULT</p>
+            <input type="text" placeholder="Vault name" class="modalInput" id="vault_name">
+            <input type="text" placeholder="Vault owner" class="modalInput" id="vault_owner">
+            <button type="button" class="submitBtn" onclick="create_vault()">Create vault</button>
+        </form>
+    </div>
+
+    <div id="dvModal" class="modal">
+        <form class="daModalContent">
+            <span class="close">&times;</span>
+            <p class = "modalTitle">DELETE VAULT</p>
+            <input class = "modalInput" placeholder = "content">
+            <input class = "modalInput" placeholder = "content">
+            <button class = "submitBtn">SUBMIT</button>
+        </form>
+    </div>
+
+    <div id="cplModal" class="modal">
+        <form class="daModalContent">
+            <span class="close">&times;</span>
+            <p class = "modalTitle">CHANGE PERM LEVEL</p>
+            <input class = "modalInput" placeholder = "content">
+            <input class = "modalInput" placeholder = "content">
+            <button class = "submitBtn">SUBMIT</button>
+        </form>
+    </div>
+    <script src = "/static/js/admin_dashboard.js"></script>
+</body>
 </html>
