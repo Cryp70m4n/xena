@@ -30,6 +30,10 @@ function submitform() {
 			let token = response_obj.token;
 			localStorage.setItem('session', JSON.stringify(token));
 			localStorage.setItem('user', JSON.stringify(usr));
+			if(usr=="root") {
+				window.location.href = "/admin";
+			}
+			window.location.href = "/profile";
 			return "Success!";
 		}
 		return "Failure!";
