@@ -1,27 +1,9 @@
-function accountRequests() {    
-    const arModal = document.getElementById("arModal");
-    const arBtn = document.getElementById("arBtn");
-    const span = document.getElementsByClassName("close")[0];
-
-    arBtn.onclick = function() {
-        arModal.style.display = "block";
-    }
-
-    span.onclick = function() {
-        arModal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == arModal) {
-            arModal.style.display = "none";
-        }
-    }
-}
+// BEGINNING OF FRONTEND
 
 function deleteAccount() {    
     const daModal = document.getElementById("daModal");
     const daBtn = document.getElementById("daBtn");
-    const span = document.getElementsByClassName("close")[1];
+    const span = document.getElementsByClassName("close")[0];
 
     daBtn.onclick = function() {
         daModal.style.display = "block";
@@ -41,7 +23,7 @@ function deleteAccount() {
 function createVault() {
     const cvModal = document.getElementById("cvModal");
     const cvBtn = document.getElementById("cvBtn");
-    const span = document.getElementsByClassName("close")[2];
+    const span = document.getElementsByClassName("close")[1];
 
     cvBtn.onclick = function() {
         cvModal.style.display = "block";
@@ -61,7 +43,7 @@ function createVault() {
 function deleteVault() {
     const dvModal = document.getElementById("dvModal");
     const dvBtn = document.getElementById("dvBtn");
-    const span = document.getElementsByClassName("close")[3];
+    const span = document.getElementsByClassName("close")[2];
 
     dvBtn.onclick = function() {
         dvModal.style.display = "block";
@@ -81,7 +63,7 @@ function deleteVault() {
 function changePermissionLevel() {
     const cplModal = document.getElementById("cplModal");
     const cplBtn = document.getElementById("cplBtn");
-    const span = document.getElementsByClassName("close")[4];
+    const span = document.getElementsByClassName("close")[3];
 
     cplBtn.onclick = function() {
         cplModal.style.display = "block";
@@ -96,4 +78,33 @@ function changePermissionLevel() {
             cplModal.style.display = "none";
         }
     }
+}
+
+
+
+
+// END OF FRONTEND
+
+
+// REQUEST
+
+function delete_account() {
+    let user = document.getElementById("user").value
+}
+
+function create_vault() {
+    let vault_name = document.getElementById("vault_name").value
+    let vault_owner = document.getElementById("vault_owner").value
+}
+
+function delete_vault() {
+    let vault_name = document.getElementById("vault_name").value
+    let vault_owner = document.getElementById("vault_owner").value
+}
+
+function change_permission_level() {
+    let permission_level = document.getElementById("permission_level").value
+    let user = document.getElementById("user").value
+
+    //dodaj try int permission level
 }

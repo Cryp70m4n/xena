@@ -63,20 +63,6 @@ a {
     background: rgba(0,0,0,0.4);
 }
 
-.arModalContent, .daModalContent {
-    margin: auto;
-    display: auto;
-}  
-
-.arModalContent {
-    background: #fefefe;
-    height: 60%;
-    width: 20%;
-    padding: 1%;
-    animation-name: modalAnimation;
-    animation-duration: 0.7s;
-}
-
 .daModalContent {
     height: 60%;
     width: 20%;
