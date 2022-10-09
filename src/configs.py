@@ -138,4 +138,4 @@ class config_editor():
             with open(permission_config_file, "w") as perm_cfg_file:
                 print("a")
         except:
-            return "Invalid permission config file path!"    
+            return "Invalid permission config file path!"

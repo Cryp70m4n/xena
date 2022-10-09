@@ -11,21 +11,18 @@ import inspect
 import string
 
 import logger
-
-"""
-TODO:
-    - Parse permission level from config file instead of predefining them in code
-    - Parse DB data from config file
-"""
+import configs
 
 
 class authorisation():
     def __init__(self):
-        self.db = "xena"
-        self.db_user = "root"
-        self.db_password = "S3curE123#!"
-        self.db_host = "127.0.0.1"
-        self.db_port = 3306
+        self.configs = configs.config_parser()
+        self.setup_configs = self.configs.setup_config_parser("configs/setup.cfg")
+        self.db = self.setup_configs["db"]
+        self.db_user = self.setup_configs["db_user"]
+        self.db_password = self.setup_configs["db_password"]
+        self.db_host = self.setup_configs["db_host"]
+        self.db_port = self.setup_configs["db_port"]
         self.conn = mariadb.connect(
             user=self.db_user,
             password=self.db_password,
