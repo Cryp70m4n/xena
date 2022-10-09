@@ -1,4 +1,4 @@
-import configs
+import ...configs
 
 config = configs.config_parser()
 
