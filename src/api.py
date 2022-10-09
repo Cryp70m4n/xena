@@ -6,6 +6,7 @@ import json
 import threading
 
 from auth import authorisation
+import configs
 from functions import admin_functions
 import logger
 from scripts.shared import shared
@@ -29,6 +30,8 @@ def log_info(request=None):
 auth = authorisation()
 shared = shared()
 admin = admin_functions()
+configs = configs.config_parser()
+permission_configs = configs.permission_config_parser("configs/permissions.cfg")
 
 ip = "127.0.0.1"
 port = 4334
@@ -179,7 +182,7 @@ def admin_authentication():
     if session != True:
         return fail_response
     permission_level_check = permission_level_auth(request)
-    if  permission_level_check != 4:
+    if  permission_level_check != permission_configs["admin"]:
         return fail_response
     return render_template("/admin_dashboard.html")
 
@@ -192,7 +195,7 @@ def create_account():
     if session != True:
         return fail_reponse
     permission_level_check = permission_level_auth(request)
-    if permission_level_check != 3:
+    if permission_level_check != permission_configs["create_account"]:
         return fail_response
     data = request.json
     data = jsonify(data)
@@ -211,15 +214,46 @@ def create_account():
     for char in password:
         if char not in password_input_whitelist:
             return illegal_chars_response
-    account_creation = create_account(data["admin"], data["session"], data["user"], data["password"], data["perm_lvl"]) #call func params here
+    account_creation = create_account(data["admin"], data["session"], data["user"], data["password"], data["perm_lvl"])
     if account_creation != True:
-        wrong_data_response = {"response_status": "You inputed some wrong data!", "response_code": 4}
+        wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
         return wrong_response
     success_response_data = {"response_status": "Success!", "response_code": 0}
     success_response = json.dumps(success_response_data)
     return success_response
 
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != permission_configs["delete_account"]:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data or "user" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    user = data["user"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    account_delete = delete_account(data["admin"], data["session"], data["user"])
+    if account_delete != True:
+        wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
+        wrong_response = json.dumps(wrong_data_response)
+        return wrong_response
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
 
 @app.route('/logout', methods=['POST'])
 def logout():
