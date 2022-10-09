@@ -199,6 +199,13 @@ def create_account():
     data = data.json
     if "admin" not in data or "session" not in data or "user" not in data or "password" not in data or "perm_lvl" not in data:
         missing_response = {"response_status": "You are missing some data!", "response_code": 2}
+        return missing_response
+    account_creation = create_account() #call func params here
+    if account_creation != True:
+        wrong_data_response = {"response_status": "You inputed some wrong data!", "response_code": 3}
+        return wrong_data_response
+    success_response = {"response_status": "Success!", "response_code": 0}
+    return success_response
 
 
 @app.route('/logout', methods=['POST'])
