@@ -214,7 +214,7 @@ def create_account():
     for char in password:
         if char not in password_input_whitelist:
             return illegal_chars_response
-    account_creation = create_account(data["admin"], data["session"], data["user"], data["password"], data["perm_lvl"])
+    account_creation = functions.create_account(data["admin"], data["session"], data["user"], data["password"], data["perm_lvl"])
     if account_creation != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -246,8 +246,164 @@ def delete_account():
     for char in user:
         if char not in user_input_whitelist:
             return illegal_chars_response
-    account_delete = delete_account(data["admin"], data["session"], data["user"])
+    account_delete = functions.delete_account(data["admin"], data["session"], data["user"])
     if account_delete != True:
+        wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
+        wrong_response = json.dumps(wrong_data_response)
+        return wrong_response
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
+
+@app.route('/create_vault', methods=['POST'])
+def create_vault():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != permission_configs["delete_vault"]:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data or "vault_name" not in data or "vault_owner" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    user = data["user"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    vault_delete = functions.create_vault(data["admin"], data["session"], data["user"])
+    if vault_delete != True:
+        wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
+        wrong_response = json.dumps(wrong_data_response)
+        return wrong_response
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
+
+@app.route('/delete_vault', methods=['POST'])
+def delete_vault():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != permission_configs["delete_vault"]:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data or "vault_name" not in data or "vault_owner" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    user = data["user"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    vault_delete = functions.delete_vault(data["admin"], data["session"], data["user"])
+    if vault_delete != True:
+        wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
+        wrong_response = json.dumps(wrong_data_response)
+        return wrong_response
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
+
+@app.route('/get_users', methods=['POST'])
+def get_users():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != permission_configs["get_users"]:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    user = data["user"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    users = functions.get_users(data["admin"], data["session"])
+    success_response_data = {"users": users, "response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
+
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != permission_configs["change_password"]:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data or "user" not in data or "password" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    user = data["user"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    change_password = functions.change_password(data["admin"], data["session"], data["user"], data["password"])
+    if change_password != True:
+        wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
+        wrong_response = json.dumps(wrong_data_response)
+        return wrong_response
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
+
+@app.route('/change_permission_level', methods=['POST'])
+def change_permission_level():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != permission_configs["change_permission_level"]:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data or "user" not in data or "perm_lvl" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    user = data["user"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    change_permission_level = functions.change_password(data["admin"], data["session"], data["user"], data["perm_lvl"])
+    if change_permission_level != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
         return wrong_response
