@@ -1,4 +1,3 @@
-
 class config_parser():
     def __init__(self):
         self.config_syntax = ["//"]

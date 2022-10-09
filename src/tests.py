@@ -35,14 +35,12 @@ config_module_test_output = tests.config_module_test()
 
 if auth_module_test_output != True:
     print(auth_module_test_output)
-    print("Auth module test failed")
 else:
     tests_passed+=1
 
 if config_module_test_output != True:
     print(config_module_test_output)
-    print("Config module test failed")
 else:
     tests_passed+=1
 
-print(f"[!] Total tests passed:{tests_passed}/{total_tests}")
+print(f"[+] - Total tests passed:{tests_passed}/{total_tests}")

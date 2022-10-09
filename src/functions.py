@@ -24,11 +24,18 @@ class admin_functions():
         self.cursor = self.conn.cursor()
         self.allowed_characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
                                    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        self.allowed_password_characters = self.allowed_characters + list(string.ascii_uppercase) + ['#', '!', '@', '?', '^', '$']
         self.auth = authorisation()
 
     def input_validation(self, usr_input=None):
         for char in usr_input:
             if char not in self.allowed_characters:
+                return self.auth.throw_error(1, "Your input contains charaters which are not allowed to be used!\nPlease try again!")
+        return self.auth.throw_success("Input authorised!")
+    
+    def password_input_validation(self, usr_input=None):
+        for char in usr_input:
+            if char not in self.allowed_password_characters:
                 return self.auth.throw_error(1, "Your input contains charaters which are not allowed to be used!\nPlease try again!")
         return self.auth.throw_success("Input authorised!")
 
@@ -41,7 +48,7 @@ class admin_functions():
             return self.auth.throw_error(2, "Argument error!\nUser cannot be None!")
         if perm_lvl == None:
             return self.auth.throw_error(2, "Argument error!\nPermission level cannot be None!")
-        passwd_check = self.input_validation(passwd)
+        passwd_check = self.password_input_validation(passwd)
         if passwd_check != True:
             return self.auth.throw_error(1, "Input error!\nPassword contains characters which aren't allowed!")
         usr_check = self.input_validation(usr)
@@ -99,7 +106,7 @@ class admin_functions():
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         if passwd == None:
             return self.auth.throw_error(2, "Argument error!\nPassword cannot be None!")
-        passwd_check = self.input_validation(passwd)
+        passwd_check = self.password_input_validation(passwd)
         if passwd_check != True:
             return self.auth.throw_error(1, "Input error!\nPassword contains characters which aren't allowed!")
         if usr != None:

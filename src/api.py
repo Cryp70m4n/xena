@@ -198,13 +198,26 @@ def create_account():
     data = jsonify(data)
     data = data.json
     if "admin" not in data or "session" not in data or "user" not in data or "password" not in data or "perm_lvl" not in data:
-        missing_response = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
         return missing_response
-    account_creation = create_account() #call func params here
+    user = data["user"]
+    password = data["password"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in user:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    for char in password:
+        if char not in password_input_whitelist:
+            return illegal_chars_response
+    account_creation = create_account(data["admin"], data["session"], data["user"], data["password"], data["perm_lvl"]) #call func params here
     if account_creation != True:
-        wrong_data_response = {"response_status": "You inputed some wrong data!", "response_code": 3}
-        return wrong_data_response
-    success_response = {"response_status": "Success!", "response_code": 0}
+        wrong_data_response = {"response_status": "You inputed some wrong data!", "response_code": 4}
+        wrong_response = json.dumps(wrong_data_response)
+        return wrong_response
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
     return success_response
 
 
