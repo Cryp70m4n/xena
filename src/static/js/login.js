@@ -33,7 +33,9 @@ function submitform() {
 			if(usr=="root") {
 				window.location.href = "/admin";
 			}
-			window.location.href = "/profile";
+			else {
+				window.location.href = "/profile";
+			}
 			return "Success!";
 		}
 		return "Failure!";

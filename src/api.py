@@ -6,6 +6,7 @@ import json
 import threading
 
 from auth import authorisation
+from functions import admin_functions
 import logger
 from scripts.shared import shared
 
@@ -27,6 +28,7 @@ def log_info(request=None):
 
 auth = authorisation()
 shared = shared()
+admin = admin_functions()
 
 ip = "127.0.0.1"
 port = 4334
@@ -125,10 +127,7 @@ def permission_level_auth(data = None):
         if char not in user_input_whitelist:
             return False
     perm_lvl = auth.permission_level_authentication(user, session)
-    if(perm_lvl == 4):
-        return True
-    return False
-
+    return perm_lvl
 
 
 #TEMPLATE ENDPOINTS (GENERAL FRONTEND STUFF)
@@ -180,9 +179,27 @@ def admin_authentication():
     if session != True:
         return fail_response
     permission_level_check = permission_level_auth(request)
-    if  permission_level_check != True:
+    if  permission_level_check != 4:
         return fail_response
     return render_template("/admin_dashboard.html")
+
+#ADMIN STUFF
+@app.route('/create_account', methods=['POST'])
+def create_account():
+    fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_reponse
+    permission_level_check = permission_level_auth(request)
+    if permission_level_check != 3:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "admin" not in data or "session" not in data or "user" not in data or "password" not in data or "perm_lvl" not in data:
+        missing_response = {"response_status": "You are missing some data!", "response_code": 2}
+
 
 @app.route('/logout', methods=['POST'])
 def logout():

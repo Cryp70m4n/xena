@@ -2,7 +2,7 @@ import string
 import mariadb
 from auth import authorisation
 
-class functions():
+class admin_functions():
     def __init__(self):
         self.auth = authorisation()
         self.db_user = "root"
