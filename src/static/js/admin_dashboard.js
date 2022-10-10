@@ -88,6 +88,15 @@ function changePermissionLevel() {
 
 // REQUEST
 
+function isJsonObject(strData) {
+    try {
+        JSON.parse(strData);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 function delete_account() {
     let user = document.getElementById("user").value
 }
@@ -95,6 +104,33 @@ function delete_account() {
 function create_vault() {
     let vault_name = document.getElementById("vault_name").value
     let vault_owner = document.getElementById("vault_owner").value
+	let xhr = new XMLHttpRequest();
+	let form = document.getElementById("create_vault");
+	xhr.open(form.method, form.action, true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	let usr = localStorage.getItem('user')
+	let sess = localStorage.getItem('session')    
+	let data = {
+        "user": usr,
+        "session": sess,
+		"vault_name": vault_name,
+		"vault_owner": vault_owner
+	};
+	xhr.onload = function() {
+		let response = null;
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
+		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
+		let response_obj = JSON.parse(response);
+		if(response_obj.response_status) {
+            console.log(response_obj)
+		}
+		return "Failure!";
+	}
+
+	xhr.send(JSON.stringify(data));
 }
 
 function delete_vault() {

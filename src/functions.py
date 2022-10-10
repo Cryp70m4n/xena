@@ -8,7 +8,7 @@ class admin_functions():
     def __init__(self):
         self.configs = configs.config_parser()
         self.setup_configs = self.configs.setup_config_parser("configs/setup.cfg")
-        self.permission_configs = self.configs.permission_config_parser("configs/setup.cfg")
+        self.permission_configs = self.configs.permission_config_parser("configs/permissions.cfg")
         self.db = self.setup_configs["db"]
         self.db_user = self.setup_configs["db_user"]
         self.db_password = self.setup_configs["db_password"]
@@ -83,7 +83,7 @@ class admin_functions():
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         if usr == None:
             return self.auth.throw_error(2, "Argument error!\nUser cannot be None!")
-        required_permission_level = self.permissions_configs["delete_account"]
+        required_permission_level = self.permission_configs["delete_account"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         get_perm_lvl = "SELECT permission_level FROM users WHERE user = ?"
         usr_execute = self.cursor.execute(get_perm_lvl, [usr])
@@ -113,7 +113,7 @@ class admin_functions():
             usr_check = self.input_validation(usr)
             if usr_check != True:
                 return self.auth.throw_error(1, "Input error\nUser contains characters which aren't allowed!")
-        required_permission_level = self.permissions_configs["change_password"]
+        required_permission_level = self.permission_configs["change_password"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         if usr != None and passwd != None:
             get_perm_lvl = "SELECT permission_level FROM users WHERE user = ?"
@@ -154,7 +154,7 @@ class admin_functions():
             return self.auth.throw_error(1, "Input error\nUser contains characters which aren't allowed!")
         if permission_level > 4 or permission_level < 1:
             return self.auth.throw_error(2, "Argument error!\nPermission level must be an number between 1 and 4!")
-        required_permission_level = self.permissions_configs["chnage_permission_level"]
+        required_permission_level = self.permission_configs["chnage_permission_level"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         get_perm_lvl = "SELECT permission_level FROM users WHERE user = ?"
         usr_execute = self.cursor.execute(get_perm_lvl, [usr])
@@ -175,7 +175,7 @@ class admin_functions():
     def get_users(self, caller_usr=None, caller_session=None):
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
-        required_permission_level = self.permissions_configs["get_users"]
+        required_permission_level = self.permission_configs["get_users"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         if caller_permission_level < required_permission_level:
             return self.auth.throw_error(3, "You are not authorised to change password to other users!")
@@ -192,7 +192,7 @@ class admin_functions():
             return self.auth.throw_error(2, "Vault name or vault owner cannot be None!")
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
-        required_permission_level = self.permissions_configs["create_vault"]
+        required_permission_level = self.permission_configs["create_vault"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         if caller_permission_level < required_permission_level:
             return self.auth.throw_error(3, "You are not authorised to create vault for users!")
@@ -215,7 +215,7 @@ class admin_functions():
             return self.auth.throw_error(2, "Vault name or vault owner cannot be None!")
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
-        required_permission_level = self.permissions_configs["delete_vault"]
+        required_permission_level = self.permission_configs["delete_vault"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         if caller_permission_level < required_permission_level:
             return self.auth.throw_error(3, "You are not authorised to delete vault of other users!")
