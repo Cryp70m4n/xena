@@ -193,19 +193,22 @@ def create_account():
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
-        return fail_reponse
+        return fail_response
     permission_level_check = permission_level_auth(request)
     if permission_level_check < permission_configs["create_account"]:
         return fail_response
     data = request.json
     data = jsonify(data)
     data = data.json
-    if "user" not in data or "session" not in data or "target_user" not in data or "password" not in data or "perm_lvl" not in data:
+    if "user" not in data or "session" not in data or "target_user" not in data or "password" not in data or "permission_level" not in data:
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
-    user = data["user"]
     password = data["password"]
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
     illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
     illegal_chars_response = json.dumps(illegal_chars_response_data)
     for char in user:
@@ -214,7 +217,7 @@ def create_account():
     for char in password:
         if char not in password_input_whitelist:
             return illegal_chars_response
-    account_creation = functions.create_account(data["user"], data["session"], data["target_user"], data["password"], data["perm_lvl"])
+    account_creation = functions.create_account(user, sess, data["target_user"], password, data["permission_level"])
     if account_creation != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -229,7 +232,7 @@ def delete_account():
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
-        return fail_reponse
+        return fail_response
     permission_level_check = permission_level_auth(request)
     if permission_level_check < permission_configs["delete_account"]:
         return fail_response
@@ -240,7 +243,11 @@ def delete_account():
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
-    account_delete = functions.delete_account(data["user"], data["session"], data["target_user"])
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    account_delete = functions.delete_account(user, sess, data["target_user"])
     if account_delete != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -266,19 +273,22 @@ def create_vault():
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
+    vault_name = data["vault_name"]
     vault_owner = data["vault_owner"]
     illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
     illegal_chars_response = json.dumps(illegal_chars_response_data)
     for char in vault_owner:
         if char not in user_input_whitelist:
             return illegal_chars_response
+    for char in vault_name:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
     session_string = data["session"].replace('"', '')
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    vault_create = functions.create_vault(user, sess, data["vault_name"], vault_owner)
+    vault_create = functions.create_vault(user, sess, vault_name, vault_owner)
     if vault_create != True:
-        print(vault_create)
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
         return wrong_response
@@ -292,18 +302,32 @@ def delete_vault():
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
-        return fail_reponse
+        return fail_response
     permission_level_check = permission_level_auth(request)
     if permission_level_check < permission_configs["delete_vault"]:
         return fail_response
     data = request.json
     data = jsonify(data)
     data = data.json
-    if "user" not in data or "session" not in data or "vault_owner" not in data:
+    if "user" not in data or "session" not in data or "vault_name" not in data or "vault_owner" not in data:
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
-    vault_delete = functions.delete_vault(user, data["session"], data["vault_owner"])
+    vault_name = data["vault_name"]
+    vault_owner = data["vault_owner"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in vault_owner:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    for char in vault_name:
+        if char not in user_input_whitelist:
+            return illegal_chars_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    vault_delete = functions.delete_vault(user, sess, vault_name, vault_owner)
     if vault_delete != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -318,7 +342,7 @@ def get_users():
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
-        return fail_reponse
+        return fail_response
     permission_level_check = permission_level_auth(request)
     if permission_level_check < permission_configs["get_users"]:
         return fail_response
@@ -329,7 +353,11 @@ def get_users():
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
-    users = functions.get_users(data["user"], data["session"])
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    users = functions.get_users(user, sess)
     success_response_data = {"users": users, "response_status": "Success!", "response_code": 0}
     success_response = json.dumps(success_response_data)
     return success_response
@@ -340,7 +368,7 @@ def change_password():
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
-        return fail_reponse
+        return fail_response
     permission_level_check = permission_level_auth(request)
     if permission_level_check < permission_configs["change_password"]:
         return fail_response
@@ -351,7 +379,17 @@ def change_password():
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
-    change_password = functions.change_password(data["user"], data["session"], data["target_user"], data["password"])
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    password = data["password"]
+    illegal_chars_response_data = {"response_status": "Input contains some illegal characters!", "response_code": 3}
+    illegal_chars_response = json.dumps(illegal_chars_response_data)
+    for char in password:
+        if char not in password_input_whitelist:
+            return illegal_chars_response
+    change_password = functions.change_password(user, sess, data["target_user"], data["password"])
     if change_password != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -366,18 +404,22 @@ def change_permission_level():
     fail_response = json.dumps(fail_response_data)
     session = session_check(request)
     if session != True:
-        return fail_reponse
+        return fail_response
     permission_level_check = permission_level_auth(request)
     if permission_level_check < permission_configs["change_permission_level"]:
         return fail_response
     data = request.json
     data = jsonify(data)
     data = data.json
-    if "user" not in data or "session" not in data or "target_user" not in data or "perm_lvl" not in data:
+    if "user" not in data or "session" not in data or "target_user" not in data or "permission_level" not in data:
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
-    change_permission_level = functions.change_password(data["user"], data["session"], data["target_user"], data["perm_lvl"])
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    change_permission_level = functions.change_password(user, sess, data["target_user"], data["permission_level"])
     if change_permission_level != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -426,7 +468,6 @@ def whoami():
 
 
 if (__name__ == "__main__"):
-    print(permission_configs)
     #app.run(port=port, debug=False,use_reloader=False)
     http_server = WSGIServer((ip, port), app)
     print(f"Starting Xena systems on http://{ip}:{port}")

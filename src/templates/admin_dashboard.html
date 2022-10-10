@@ -4,11 +4,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "stylesheet" href = "/static/styles/admin_dashboard_styles.css">
-    <title>PAZKAL</title>
+    <title>ADMIN PANEL</title>
 </head>
 <body>
     <div class = "mainBox">
-        <p class = "titleContent">PAZKAL</p>
+        <p class = "titleContent">Admin Panel</p>
         <button class = "boxBtns" onclick = "deleteAccount()" id="daBtn"><a href = "#">DELETE ACCOUNT</a></button>
         <button class = "boxBtns" onclick = "createVault()" id="cvBtn"><a href = "#">CREATE VAULT</a></button>
         <button class = "boxBtns" onclick = "deleteVault()" id="dvBtn"><a href = "#">DELETE VAULT</a></button>
@@ -16,10 +16,10 @@
     </div>
 
     <div id="daModal" class="modal">
-        <form class="daModalContent">
+        <form class="daModalContent" action="/delete_account" method="POST" id="delete_account">
             <span class="close">&times;</span>
             <p class = "modalTitle">DELETE ACCOUNT</p>
-            <input class = "modalInput" placeholder = "account" id="user">
+            <input class = "modalInput" placeholder = "account" id="target_user">
             <button type="button" class="submitBtn" onclick="delete_account()">Delete vault</button>
         </form>
     </div>
@@ -35,20 +35,20 @@
     </div>
 
     <div id="dvModal" class="modal">
-        <form class="daModalContent">
+        <form class="daModalContent" action="/delete_vault" method="POST" id="delete_vault">
             <span class="close">&times;</span>
             <p class = "modalTitle">DELETE VAULT</p>
-            <input class = "modalInput" placeholder = "vault_name">
-            <input class = "modalInput" placeholder = "vault_owner">
+            <input class = "modalInput" placeholder = "vault_name" id="target_vault_name">
+            <input class = "modalInput" placeholder = "vault_owner" id="target_vault_owner">
             <button class = "submitBtn" onclick="delete_vault()">SUBMIT</button>
         </form>
     </div>
 
     <div id="cplModal" class="modal">
-        <form class="daModalContent">
+        <form class="daModalContent" action="/change_permission_level" method="POST" id="change_permission_level">
             <span class="close">&times;</span>
             <p class = "modalTitle">CHANGE PERM LEVEL</p>
-            <input class = "modalInput" placeholder = "content" id="user">
+            <input class = "modalInput" placeholder = "content" id="target_usr">
             <input class = "modalInput" placeholder = "content" id="permission_level">
             <button class = "submitBtn" onclick="change_permission_level()">SUBMIT</button>
         </form>

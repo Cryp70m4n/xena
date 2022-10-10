@@ -88,6 +88,9 @@ function changePermissionLevel() {
 
 // REQUEST
 
+let usr = localStorage.getItem('user')
+let sess = localStorage.getItem('session')
+
 function isJsonObject(strData) {
     try {
         JSON.parse(strData);
@@ -98,7 +101,31 @@ function isJsonObject(strData) {
 }
 
 function delete_account() {
-    let user = document.getElementById("user").value
+    let target_user = document.getElementById("target_user").value
+	let xhr = new XMLHttpRequest();
+	let form = document.getElementById("delete_account");
+	xhr.open(form.method, form.action, true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	let data = {
+        "user": usr,
+        "session": sess,
+		"target_user": target_user
+	};
+	xhr.onload = function() {
+		let response = null;
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
+		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
+		let response_obj = JSON.parse(response);
+		if(response_obj.response_status) {
+            console.log(response_obj)
+		}
+		return "Failure!";
+	}
+
+	xhr.send(JSON.stringify(data));
 }
 
 function create_vault() {
@@ -108,8 +135,6 @@ function create_vault() {
 	let form = document.getElementById("create_vault");
 	xhr.open(form.method, form.action, true);
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-	let usr = localStorage.getItem('user')
-	let sess = localStorage.getItem('session')    
 	let data = {
         "user": usr,
         "session": sess,
@@ -134,13 +159,64 @@ function create_vault() {
 }
 
 function delete_vault() {
-    let vault_name = document.getElementById("vault_name").value
-    let vault_owner = document.getElementById("vault_owner").value
+    let vault_name = document.getElementById("target_vault_name").value
+    let vault_owner = document.getElementById("target_vault_owner").value
+	let xhr = new XMLHttpRequest();
+	let form = document.getElementById("delete_vault");
+	xhr.open(form.method, form.action, true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	let data = {
+        "user": usr,
+        "session": sess,
+		"vault_name": vault_name,
+		"vault_owner": vault_owner
+	};
+	xhr.onload = function() {
+		let response = null;
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
+		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
+		let response_obj = JSON.parse(response);
+		if(response_obj.response_status) {
+            console.log(response_obj)
+		}
+		return "Failure!";
+	}
+
+	xhr.send(JSON.stringify(data));
 }
 
 function change_permission_level() {
     let permission_level = document.getElementById("permission_level").value
-    let user = document.getElementById("user").value
+    permission_level = parseInt(permission_level)
+    let target_user = document.getElementById("target_usr").value
+	let xhr = new XMLHttpRequest();
+	let form = document.getElementById("change_permission_level");
+	xhr.open(form.method, form.action, true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	let data = {
+        "user": usr,
+        "session": sess,
+        "target_user": target_user,
+        "permission_level": permission_level
+	};
+	xhr.onload = function() {
+		let response = null;
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
+		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
+		let response_obj = JSON.parse(response);
+		if(response_obj.response_status) {
+            console.log(response_obj)
+		}
+		return "Failure!";
+	}
+
+	xhr.send(JSON.stringify(data));
 
     //dodaj try int permission level
 }

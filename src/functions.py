@@ -71,9 +71,9 @@ class admin_functions():
         self.cursor.execute(usr_check_sql, [usr])
         usr_exist_check = self.cursor.fetchall()
         self.conn.commit()
-        if usr_exist_check[0][0] != True:
+        if usr_exist_check[0][0] != 0:
             return self.auth.throw_error(1, "Database error!\nUser already exists in database!")
-        password = self.generate_hash(passwd)
+        password = self.auth.generate_hash(passwd)
         self.cursor.execute(sql, (usr, password, perm_lvl))
         self.conn.commit()
         return self.auth.throw_success("Account created successfully!")
@@ -127,12 +127,12 @@ class admin_functions():
                 return self.auth.throw_error(3, "You are not authorised to change password to other users!")
             if caller_permission_level <= usr_permission_level:
                 return self.auth.throw_error(3, "You can't change password of accounts that has higher or equal permission that you have!")
-            password = self.generate_hash(passwd)
+            password = self.auth.generate_hash(passwd)
             sql = "UPDATE users SET password = ? WHERE user = ?"
             self.cursor.execute(sql, (password, usr))
             self.conn.commit()
         if usr == None and passwd != None:
-            password = self.generate_hash(passwd)
+            password = self.auth.generate_hash(passwd)
             sql = "UPDATE users SET password = ? WHERE user = ?"
             self.cursor.execute(sql, (password, caller_usr))
             self.conn.commit()
