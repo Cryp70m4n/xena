@@ -227,5 +227,24 @@ class admin_functions():
         self.conn.commit()
         return self.auth.throw_success("Vault deleted successfully!")
 
+
+    def get_vaults(self, caller_usr=None, caller_session=None, target_usr=None):
+        if caller_usr==None or caller_session==None or target_usr==None:
+            return self.auth.throw_error(2, "Invalid data!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        required_permission_level = self.permission_configs["get_vaults"]
+        caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
+        if caller_permission_level < required_permission_level:
+            return self.auth.throw_error(3, "You are not authorised to change password to other users!")
+        sql = "SELECT vault_name FROM vaults WHERE vault_owner = ?"
+        self.cursor.execute(sql, [target_usr])
+        rows = self.cursor.fetchall()
+        self.conn.commit()
+        vaults = []
+        for row in rows:
+            vaults.append(row[0])
+        return vaults
+
     def __del__(self):
         self.conn.close()

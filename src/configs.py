@@ -2,7 +2,7 @@ class config_parser():
     def __init__(self):
         self.config_syntax = ["//"]
         self.setup_syntax = ["db", "db_user", "db_password", "db_host", "db_port"]
-        self.permissions_syntax = ["admin", "create_account", "delete_account", "change_password", "create_vault", "delete_vault", "change_permission_level", "get_users"]
+        self.permissions_syntax = ["admin", "create_account", "delete_account", "change_password", "create_vault", "delete_vault", "change_permission_level", "get_users", "get_vaults"]
 
     def setup_config_parser(self, setup_config_file=None):
         if setup_config_file == None:
