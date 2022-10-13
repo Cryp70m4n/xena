@@ -88,8 +88,8 @@ function changePermissionLevel() {
 
 // REQUEST
 
-let usr = localStorage.getItem('user')
-let sess = localStorage.getItem('session')
+let usr = localStorage.getItem('user');
+let sess = localStorage.getItem('session');
 
 function isJsonObject(strData) {
     try {

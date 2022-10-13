@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect
+from flask import Flask, request, jsonify, render_template
 from gevent.pywsgi import WSGIServer
 import binascii
 import string
@@ -430,21 +430,15 @@ def change_permission_level():
     success_response = json.dumps(success_response_data)
     return success_response
 
-@app.route('/logout', methods=['POST'])
-def logout():
-    log_info(request)
-    session = session_check(request)
-    if session != True:
-        return "False"
-    auth.delete_session(user, session)
-    return redirect("/")
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
     log_info(request)
     session = session_check(request)
     if session != True:
-        return redirect('/')
+        logout_response_data = {"response_status": "logout", "response_code": -1}
+        logout_response = json.dumps(logout_response_data)
+        return logout_response
     return shared.read_shared()
 
 @app.route('/api/download_shared', methods=['POST'])
@@ -452,7 +446,9 @@ def download_shared():
     log_info(request)
     session = session_check(request)
     if session !=  True:
-        return redirect('/')
+        logout_response_data = {"response_status": "logout", "response_code": -1}
+        logout_response = json.dumps(logout_response_data)
+        return logout_response
     try:
         target_file = request.args["file"]
     except:
@@ -467,6 +463,28 @@ def whoami():
         return "Success!"
     return "False!"
 
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    log_info(request)
+    session = session_check(request)
+    if session != True:
+        return "False"
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "user" not in data or "session" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    auth.delete_session(user, session)
+    logout_response_data = {"response_status": "logout", "response_code": -1}
+    logout_response = json.dumps(logout_response_data)
+    return logout_response
 
 
 if (__name__ == "__main__"):
