@@ -19,7 +19,7 @@
         <form class="daModalContent" action="/delete_account" method="POST" id="delete_account">
             <span class="close">&times;</span>
             <p class = "modalTitle">DELETE ACCOUNT</p>
-            <input class = "modalInput" placeholder = "account" id="target_user">
+            <input type="text" class = "modalInput" placeholder = "account" id="target_user">
             <button type="button" class="submitBtn" onclick="delete_account()">Delete vault</button>
         </form>
     </div>
@@ -38,9 +38,9 @@
         <form class="daModalContent" action="/delete_vault" method="POST" id="delete_vault">
             <span class="close">&times;</span>
             <p class = "modalTitle">DELETE VAULT</p>
-            <input class = "modalInput" placeholder = "vault_name" id="target_vault_name">
-            <input class = "modalInput" placeholder = "vault_owner" id="target_vault_owner">
-            <button class = "submitBtn" onclick="delete_vault()">SUBMIT</button>
+            <input type="text" class = "modalInput" placeholder = "Vault name" id="target_vault_name">
+            <input type="text" class = "modalInput" placeholder = "Vault owner" id="target_vault_owner">
+            <button type="button" class = "submitBtn" onclick="delete_vault()">Delete vault</button>
         </form>
     </div>
 
@@ -48,9 +48,9 @@
         <form class="daModalContent" action="/change_permission_level" method="POST" id="change_permission_level">
             <span class="close">&times;</span>
             <p class = "modalTitle">CHANGE PERM LEVEL</p>
-            <input class = "modalInput" placeholder = "content" id="target_usr">
-            <input class = "modalInput" placeholder = "content" id="permission_level">
-            <button class = "submitBtn" onclick="change_permission_level()">SUBMIT</button>
+            <input type="text" class = "modalInput" placeholder = "content" id="target_usr">
+            <input type="text" class = "modalInput" placeholder = "content" id="permission_level">
+            <button type="button" class = "submitBtn" onclick="change_permission_level()">SUBMIT</button>
         </form>
     </div>
     <script src = "/static/js/admin_dashboard.js"></script>

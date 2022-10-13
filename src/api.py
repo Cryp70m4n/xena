@@ -296,6 +296,7 @@ def create_vault():
     success_response = json.dumps(success_response_data)
     return success_response
 
+
 @app.route('/delete_vault', methods=['POST'])
 def delete_vault():
     fail_response_data = {"response_status": "You are not an admin!", "response_code": 1}
@@ -327,8 +328,8 @@ def delete_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    vault_delete = functions.delete_vault(user, sess, vault_name, vault_owner)
-    if vault_delete != True:
+    vault_create = functions.delete_vault(user, sess, vault_name, vault_owner) #also delete vaults while deleting user accounts add list vaults function in functions.py and call it
+    if vault_create != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
         return wrong_response
@@ -419,7 +420,7 @@ def change_permission_level():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    change_permission_level = functions.change_password(user, sess, data["target_user"], data["permission_level"])
+    change_permission_level = functions.change_permission_level(user, sess, data["target_user"], data["permission_level"]) #CHECK ALL UPDATE QUERIES IT SEEMS THAT THEY DOESN'T WORK in fuctions.py
     if change_permission_level != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
