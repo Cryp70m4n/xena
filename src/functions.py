@@ -154,7 +154,7 @@ class admin_functions():
             return self.auth.throw_error(1, "Input error\nUser contains characters which aren't allowed!")
         if permission_level > 4 or permission_level < 1:
             return self.auth.throw_error(2, "Argument error!\nPermission level must be an number between 1 and 4!")
-        required_permission_level = self.permission_configs["chnage_permission_level"]
+        required_permission_level = self.permission_configs["change_permission_level"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
         get_perm_lvl = "SELECT permission_level FROM users WHERE user = ?"
         usr_execute = self.cursor.execute(get_perm_lvl, [usr])

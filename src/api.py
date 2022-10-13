@@ -288,6 +288,7 @@ def create_vault():
     user = data["user"]
     user = user.replace('"', '')
     vault_create = functions.create_vault(user, sess, vault_name, vault_owner)
+    functions.create_account(user, sess, "test", "test", 1)
     if vault_create != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
@@ -420,7 +421,7 @@ def change_permission_level():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    change_permission_level = functions.change_permission_level(user, sess, data["target_user"], data["permission_level"]) #CHECK ALL UPDATE QUERIES IT SEEMS THAT THEY DOESN'T WORK in fuctions.py
+    change_permission_level = functions.change_permission_level(user, sess, data["target_user"], data["permission_level"])
     if change_permission_level != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}
         wrong_response = json.dumps(wrong_data_response)
