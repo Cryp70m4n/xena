@@ -247,6 +247,10 @@ def delete_account():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
+    vaults = get_vaults(user, sess, data["target_user"])
+    if vaults != []:
+        for vault in vaults:
+            functions.delete_vault(user, sess, vault, data["target_user"])
     account_delete = functions.delete_account(user, sess, data["target_user"])
     if account_delete != True:
         wrong_data_response = {"response_status": "Your input contains some wrong data!", "response_code": 4}

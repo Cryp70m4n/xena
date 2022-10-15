@@ -32,7 +32,7 @@ class authorisation():
         )
         self.cursor = self.conn.cursor()
         self.iv = 100
-        self.token_duration = 30*60  # 30 minutes in seconds
+        self.token_duration = self.setup_configs["session_expire_time"]*60
         logger.setup_logger('auth_logger', r'logs/auth.log')
         self.auth_logger = logger.logging.getLogger('auth_logger')
     
