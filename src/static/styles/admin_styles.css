@@ -16,6 +16,31 @@ body {
 	color: white;
 }
 
+.logout {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #262c5b;
+  font-size: 24px;
+  color: #fff;
+  border-color: white;
+  border-radius: 18px;
+  transition: transform 0.3s ease;
+}
+
+.login_form .submit {
+  background: #262c5b;
+  font-size: 28px;
+  color: #fff;
+  border-color: white;
+  border-radius: 18px;
+  transition: transform 0.3s ease;
+}
+.login_form .submit_div {
+  display: flex;
+  justify-content: center;
+  margin-top: 20vh;
+}
 
 @media screen and (max-width: 600px) {
   .title {

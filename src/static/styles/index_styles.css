@@ -17,6 +17,36 @@ body {
 	color: white;
 }
 
+.login {
+  background: #262c5b;
+  font-size: 28px;
+  color: #fff;
+  border-color: white;
+  border-radius: 18px;
+  transition: transform 0.3s ease;
+}
+
+.login-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 20vh;
+}
+
+.register {
+  background: #262c5b;
+  font-size: 28px;
+  color: #fff;
+  border-color: white;
+  border-radius: 18px;
+  transition: transform 0.3s ease;
+}
+
+.register-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+}
+
 @media screen and (max-width: 600px) {
   .title {
     font-size: 16px;

@@ -11,11 +11,11 @@
 	<body>
 		<h class="username" id="username">username from js here</h>
 		<p class="title" id="title">ADMIN PANEL</p>
-		<form action="/admin_authentication" method="POST" id="access">
-			<input value="Submit" type="button" onclick="submitform()">
+		<form class="login_form"action="/admin_authentication" method="POST" id="access">
+			<div class="submit_div"><input class ="submit" value="Submit" type="button" onclick="submitform()"></div>
 		</form>
 
-		<button onclick="logout()">LOG OUT</button>
+		<button class="logout" onclick="logout()">LOG OUT</button>
 		<script src="/static/js/logout.js"></script>
 		<script src="/static/js/admin.js"></script>
 	</body>
