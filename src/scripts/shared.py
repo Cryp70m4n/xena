@@ -12,7 +12,6 @@ import logger
 """
 	TODO:
 	- Read files from db make table shared(file, folder) shared1 shared2 shared3,...
-	- Add directory check(if files > limit create new one) using glob
 """
 #INPUT WHITELISTS
 chars = list(string.ascii_lowercase)

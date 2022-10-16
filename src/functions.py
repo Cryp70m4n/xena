@@ -1,5 +1,7 @@
 import string
 import mariadb
+import os
+import glob
 
 from auth import authorisation
 import configs
@@ -208,6 +210,8 @@ class admin_functions():
         sql = "INSERT IGNORE INTO vaults(vault_name, vault_owner) VALUES(?, ?)"
         self.cursor.execute(sql, [vault_name, vault_owner])
         self.conn.commit()
+        cmd = f"mkdir vaults/{vault_owner}/{vault_name}"
+        os.system(cmd)
         return self.auth.throw_success("Vault created successfully!")
 
     def delete_vault(self, caller_usr=None, caller_session=None, vault_name=None, vault_owner=None):
@@ -225,6 +229,10 @@ class admin_functions():
         sql = "DELETE FROM vaults WHERE vault_name=? AND vault_owner=?"
         self.cursor.execute(sql, [vault_name, vault_owner])
         self.conn.commit()
+        cmd = f"shred -uzvn3 vaults/{vault_owner}/{vault_name}/*"
+        os.system(cmd)
+        cmd2 = f"rm -rf vaults/{vault_onwer}/{vault_name}"
+        os.system(cmd2)
         return self.auth.throw_success("Vault deleted successfully!")
 
 
@@ -245,6 +253,42 @@ class admin_functions():
         for row in rows:
             vaults.append(row[0])
         return vaults
+    
+    def read_vault(self, caller_usr=None, caller_session=None, target_vault=None):
+        if caller_usr==None or caller_session==None or target_vault==None:
+            return self.auth.throw_error(2, "Invalid data!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        sql = "SELECT vault_name FROM vaults WHERE vault_owner = ?"
+        self.cursor.execute(sql, [caller_usr])
+        rows = self.cursor.fetchall()
+        self.conn.commit()
+        vaults = []
+        for row in rows:
+            vaults.append(row[0])
+        if target_vault not in vaults:
+            self.auth.throw_error(2, "Vault you are looking for doesn't exist!")
+        vault_path = f"vaults/{caller_usr}/{target_vault}/*"
+        files = glob.glob(vault_path)
+        return files
 
+    """
+    TODO:
+        - ADD INSERT INTO VAULT, DOWNLOAD FROM VAULT
+    """
+    
+    def delete_from_vault(self, caller_usr=None, caller_session=None, target_vault=None, target_file=None):
+        if caller_usr==None or caller_session==None or target_vault==None or target_file==None:
+            return self.auth.throw_error(2, "Invalid data!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        files = self.read_vault(caller_usr, caller_session, target_vault)
+        if files == False:
+            return self.auth.throw_error(3, "Invalid vault data!")
+        if target_file not in files:
+            return self.auth.throw_error(2, "Target file cannot be found inside specified vault!")
+        cmd = f"shred -uzvn3 vaults/{caller_usr}/{target_vault}/{target_file}"
+        os.system(cmd)
+        return self.auth.throw_success("File have been deleted from your vault successfully!")
     def __del__(self):
         self.conn.close()
