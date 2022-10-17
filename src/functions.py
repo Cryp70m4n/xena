@@ -243,8 +243,8 @@ class admin_functions():
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         required_permission_level = self.permission_configs["get_vaults"]
         caller_permission_level = self.auth.permission_level_authentication(caller_usr, caller_session)
-        if caller_permission_level < required_permission_level:
-            return self.auth.throw_error(3, "You are not authorised to change password to other users!")
+        if caller_permission_level < required_permission_level and caller_usr != target_usr:
+            return self.auth.throw_error(3, "You are not authorised to read others vaults!")
         sql = "SELECT vault_name FROM vaults WHERE vault_owner = ?"
         self.cursor.execute(sql, [target_usr])
         rows = self.cursor.fetchall()

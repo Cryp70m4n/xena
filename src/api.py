@@ -154,6 +154,11 @@ def register():
     log_info(request)
     return render_template('/register.html')
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    log_info(request)
+    return render_template('/profile.html')
+
 
 #LOGICAL ENDPOINTS (GENERAL AUTHENTICATION STUFF)
 @app.route('/authentication', methods=['POST'])
@@ -434,6 +439,28 @@ def change_permission_level():
     success_response = json.dumps(success_response_data)
     return success_response
 
+@app.route('/get_vaults', methods=['POST'])
+def get_vaults():
+    fail_response_data = {"response_status": "You are not allowed to do that!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "user" not in data or "session" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    vaults = functions.get_vaults(user, sess, user)
+    success_response_data = {"vaults": vaults, "response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
 
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
