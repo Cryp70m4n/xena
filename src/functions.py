@@ -219,8 +219,10 @@ class admin_functions():
         sql = "INSERT IGNORE INTO vaults(vault_name, vault_owner) VALUES(?, ?)"
         self.cursor.execute(sql, [vault_name, vault_owner])
         self.conn.commit()
-        cmd = f"mkdir vaults/{vault_owner}/{vault_name}"
+        cmd = f"mkdir vaults/{vault_owner}"
         os.system(cmd)
+        cmd2 = f"mkdir vaults/{vault_owner}/{vault_name}"
+        os.system(cmd2)
         return self.auth.throw_success("Vault created successfully!")
 
     def delete_vault(self, caller_usr=None, caller_session=None, vault_name=None, vault_owner=None):
@@ -240,7 +242,7 @@ class admin_functions():
         self.conn.commit()
         cmd = f"shred -uzvn3 vaults/{vault_owner}/{vault_name}/*"
         os.system(cmd)
-        cmd2 = f"rm -rf vaults/{vault_onwer}/{vault_name}"
+        cmd2 = f"rm -rf vaults/{vault_owner}/{vault_name}"
         os.system(cmd2)
         return self.auth.throw_success("Vault deleted successfully!")
 
