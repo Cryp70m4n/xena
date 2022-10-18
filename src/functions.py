@@ -2,9 +2,18 @@ import string
 import mariadb
 import os
 import glob
+import codecs
+import base64
 
 from auth import authorisation
 import configs
+
+
+
+"""
+    TODO:
+        - COULD ADD RSA ENCRYPTION TO FILES IN FUTURE
+"""
 
 class admin_functions():
     def __init__(self):
@@ -271,11 +280,49 @@ class admin_functions():
         vault_path = f"vaults/{caller_usr}/{target_vault}/*"
         files = glob.glob(vault_path)
         return files
+    
+    def insert_into_vault(self, caller_usr=None, caller_session=None, target_vault=None, file_data_b64=None, filename=None):
+        if caller_usr == None or caller_session == None or target_vault == None or file_data_b64 == None or filename == None:
+            return self.auth.throw_error(2, "Invalid data!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        files = self.read_vault(caller_usr, caller_session, target_vault)
+        if filename in files:
+            self.auth.throw_error(2, "Filename already exist in vault!")
+        path = f"vaults/{caller_usr}/{target_vault}"
+        fname = path + filename
+        file_data = base64.b64decode(file_data_b64)
+        with codecs.open(fname, "wb") as f:
+            f.write(file_data)
+        return self.auth.throw_success("File added successfully!")
 
-    """
-    TODO:
-        - ADD INSERT INTO VAULT, DOWNLOAD FROM VAULT
-    """
+    def delete_from_vault(self, caller_usr=None, caller_session=None, target_vault=None, filename=None):
+        if caller_usr == None or caller_session == None or target_vault == None or filename == None:
+            return self.auth.throw_error(2, "Invalid data!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        files = self.read_vault(caller_usr, caller_session, target_vault)
+        if filename not in files:
+            self.auth.throw_error(2, "Filename doesn't exist in vault!")
+        path = f"vaults/{caller_usr}/{target_vault}"
+        fname = path + filename
+        cmd = f"rm -rf {fname}"
+        os.system(cmd)
+        self.auth.throw_success("File deleted successfully!")
+    
+    def get_from_vault(self, caller_usr=None, caller_session=None, target_vault=None, filename=None):
+        if caller_usr == None or caller_session == None or target_vault == None or filename == None:
+            return self.auth.throw_error(2, "Invalid data!")
+        if self.auth.session_authentication(caller_usr, caller_session) != True:
+            return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        files = self.read_vault(caller_usr, caller_session, target_vault)
+        if filename not in files:
+            self.auth.throw_error(2, "Filename doesn't exist in vault!")
+        path = f"vaults/{caller_usr}/{target_vault}"
+        fname = path + filename
+        file_data = codecs.open(fname, "rb").read()
+        file_data_b64 = base64.b64encode(file_data)
+        return file_data_b64
     
     def delete_from_vault(self, caller_usr=None, caller_session=None, target_vault=None, target_file=None):
         if caller_usr==None or caller_session==None or target_vault==None or target_file==None:
