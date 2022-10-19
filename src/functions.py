@@ -306,7 +306,7 @@ class admin_functions():
         files = self.read_vault(caller_usr, caller_session, target_vault)
         if filename not in files:
             self.auth.throw_error(2, "Filename doesn't exist in vault!")
-        path = f"vaults/{caller_usr}/{target_vault}"
+        path = f"vaults/{caller_usr}/{target_vault}/"
         fname = path + filename
         file_data = codecs.open(fname, "rb").read()
         file_data_b64 = base64.b64encode(file_data)
@@ -322,7 +322,7 @@ class admin_functions():
             return self.auth.throw_error(3, "Invalid vault data!")
         if target_file not in files:
             return self.auth.throw_error(2, "Target file cannot be found inside specified vault!")
-        cmd = f"shred -uzvn3 vaults/{caller_usr}/{target_vault}/{target_file}"
+        cmd = f"shred -uzvn3 vaults/{caller_usr}/{target_vault}/{target_file}/"
         os.system(cmd)
         return self.auth.throw_success("File have been deleted from your vault successfully!")
 

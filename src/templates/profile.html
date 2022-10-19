@@ -28,7 +28,19 @@
 			<input id="filedata" type="file" name="file">
             <br>
 			<br>
-            <button type="button" class="form_button" onclick="insert_into_vault()">Log in</button>
+            <button type="button" class="form_button" onclick="insert_into_vault()">Insert into vault</button>
+        </form>
+
+		<form action="/delete_from_vault" method="POST" class="delete_from_vault" id="delete_from_vault">
+			<p class="file_choice" id="file_choice">Choose file:</p>
+			<br>
+			<input type="text" placeholder="Vault name" class="vaultname" id="vname">
+			<br>
+			<br>
+			<input type="text" placeholder="Filename" class="filename" id="fname">
+			<br>
+			<br>
+            <button type="button" class="form_button" onclick="delete_from_vault()">Delete from vault</button>
         </form>
 
 		<script src="/static/js/logout.js"></script>

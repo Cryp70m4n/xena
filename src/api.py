@@ -491,7 +491,7 @@ def delete_from_vault():
     data = request.json
     data = jsonify(data)
     data = data.json
-    if "user" not in data or "session" not in data or "target_vault" not in data or "target_file" not in data:
+    if "user" not in data or "session" not in data or "target_vault" or "filename" not in data:
         missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
         missing_response = json.dumps(missing_response_data)
         return missing_response
@@ -499,6 +499,10 @@ def delete_from_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
+    functions.delete_from_vault(user, sess, data["target_vault"], data["filename"])
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
 
 @app.route('/get_from_vault', methods=['POST'])
 def get_from_vault():
