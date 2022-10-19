@@ -92,7 +92,7 @@ function delete_from_vaults() {
 	let filename = document.getElementById("fname").value;
 	let xhr = new XMLHttpRequest();
 	let form = document.getElementById("delete_from_vault");
-	xhr.open(method, action, true);
+	xhr.open(form.method, form.action, true);
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	let data = {
 		"user": usr,
@@ -108,13 +108,9 @@ function delete_from_vaults() {
 		if(isJsonObject(response) != true)
 			return "Failure!"
 		let response_obj = JSON.parse(response);
-		if(response_obj.vaults) {
-            let vaults = response_obj.vaults;
-            let vaults_element = document.getElementById("vaults");
-            vaults_element.textContent += vaults;
-            vaults_element.textContent += " ";
-			vaults_element.style.color = "white";
-            return "Success!"
+		if(response_obj.response_code) {
+			console.log(response_obj)
+			return "Success!";
 		}
 		return "Failure!";
 	}

@@ -289,12 +289,11 @@ class admin_functions():
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
         files = self.read_vault(caller_usr, caller_session, target_vault)
+        filename = f"vaults/{caller_usr}/{target_vault}/" + filename
         if filename in files:
             self.auth.throw_error(2, "Filename already exist in vault!")
-        path = f"vaults/{caller_usr}/{target_vault}/"
-        fname = path + filename
         file_data = base64.b64decode(file_data_b64)
-        with codecs.open(fname, "wb") as f:
+        with codecs.open(filename, "wb") as f:
             f.write(file_data)
         return self.auth.throw_success("File added successfully!")
     
@@ -320,9 +319,10 @@ class admin_functions():
         files = self.read_vault(caller_usr, caller_session, target_vault)
         if files == False:
             return self.auth.throw_error(3, "Invalid vault data!")
+        target_file = f"vaults/{caller_usr}/{target_vault}/" + target_file
         if target_file not in files:
             return self.auth.throw_error(2, "Target file cannot be found inside specified vault!")
-        cmd = f"shred -uzvn3 vaults/{caller_usr}/{target_vault}/{target_file}/"
+        cmd = f"shred -uzvn3 {target_file}"
         os.system(cmd)
         return self.auth.throw_success("File have been deleted from your vault successfully!")
 
