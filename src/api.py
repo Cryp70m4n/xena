@@ -462,6 +462,86 @@ def get_vaults():
     success_response = json.dumps(success_response_data)
     return success_response
 
+@app.route('/read_vault', methods=['POST'])
+def read_vault():
+    fail_response_data = {"response_status": "You are not allowed to do that!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "user" not in data or "session" not in data or "target_vault" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+
+@app.route('/delete_from_vault', methods=['POST'])
+def delete_from_vault():
+    fail_response_data = {"response_status": "You are not allowed to do that!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "user" not in data or "session" not in data or "target_vault" not in data or "target_file" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+
+@app.route('/get_from_vault', methods=['POST'])
+def get_from_vault():
+    fail_response_data = {"response_status": "You are not allowed to do that!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "user" not in data or "session" not in data or "target_vault" not in data or "target_file" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+
+@app.route('/insert_into_vault', methods=['POST'])
+def insert_into_vault():
+    fail_response_data = {"response_status": "You are not allowed to do that!", "response_code": 1}
+    fail_response = json.dumps(fail_response_data)
+    session = session_check(request)
+    if session != True:
+        return fail_response
+    data = request.json
+    data = jsonify(data)
+    data = data.json
+    if "user" not in data or "session" not in data or "target_vault" not in data or "filedata" not in data or "filename" not in data:
+        missing_response_data = {"response_status": "You are missing some data!", "response_code": 2}
+        missing_response = json.dumps(missing_response_data)
+        return missing_response
+    session_string = data["session"].replace('"', '')
+    sess = str(session_string)
+    user = data["user"]
+    user = user.replace('"', '')
+    functions.insert_into_vault(user, sess, data["target_vault"], data["filedata"], data["filename"])
+    success_response_data = {"response_status": "Success!", "response_code": 0}
+    success_response = json.dumps(success_response_data)
+    return success_response
+
 @app.route('/api/read_shared', methods=['POST'])
 def read_shared():
     log_info(request)

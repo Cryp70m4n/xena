@@ -15,6 +15,22 @@
 		<p class="vauls" id="vaults">VAULTS:</p>
 		<button class="get_vaults" id="get_vaults" onclick="get_vaults()">GET VAULTS</button>
 		<button class="logout" onclick="logout()">LOG OUT</button>
+
+        <form action="/insert_into_vault" method="POST" class="insert_into_vault" id="insert_into_vault">
+			<p class="file_choice" id="file_choice">Choose file:</p>
+			<br>
+			<input type="text" placeholder="Vault name" class="vaultname" id="vaultname">
+			<br>
+			<br>
+			<input type="text" placeholder="Filename" class="filename" id="filename">
+			<br>
+			<br>
+			<input id="filedata" type="file" name="file">
+            <br>
+			<br>
+            <button type="button" class="form_button" onclick="insert_into_vault()">Log in</button>
+        </form>
+
 		<script src="/static/js/logout.js"></script>
 		<script src="/static/js/profile.js"></script>
 	</body>
