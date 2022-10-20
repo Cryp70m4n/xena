@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 from gevent.pywsgi import WSGIServer
 import binascii
 import string
@@ -499,7 +499,9 @@ def delete_from_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    functions.delete_from_vault(user, sess, data["target_vault"], data["filename"])
+    check_resp = functions.delete_from_vault(user, sess, data["target_vault"], data["filename"])
+    if check_resp != True:
+        return fail_response
     success_response_data = {"response_status": "Success!", "response_code": 0}
     success_response = json.dumps(success_response_data)
     return success_response
@@ -522,6 +524,8 @@ def get_from_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
+    filepath = functions.get_from_vault(user, session, data["target_vault"], data["target_file"])
+    return send_file(filepath, as_attachment=True)
 
 @app.route('/insert_into_vault', methods=['POST'])
 def insert_into_vault():
@@ -541,7 +545,9 @@ def insert_into_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    functions.insert_into_vault(user, sess, data["target_vault"], data["filedata"], data["filename"])
+    check_resp = functions.insert_into_vault(user, sess, data["target_vault"], data["filedata"], data["filename"])
+    if check_resp != True:
+        return fail_response
     success_response_data = {"response_status": "Success!", "response_code": 0}
     success_response = json.dumps(success_response_data)
     return success_response

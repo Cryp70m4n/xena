@@ -36,6 +36,7 @@ class admin_functions():
         self.allowed_characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
                                    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         self.allowed_password_characters = self.allowed_characters + list(string.ascii_uppercase) + ['#', '!', '@', '?', '^', '$']
+        self.filename_wl = self.allowed_characters + "."
         self.auth = authorisation()
 
     def input_validation(self, usr_input=None):
@@ -288,6 +289,14 @@ class admin_functions():
             return self.auth.throw_error(2, "Invalid data!")
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        dot_cnt = 0
+        for char in filename:
+            if dot_cnt > 1:
+                return self.auth.throw_error(3, "You cannot enter more than one .")
+            if char == ".":
+                dot_cnt+=1
+            if char not in self.filename_wl:
+                return self.auth.throw_error(1, "Your input contains charaters which are not allowed to be used!\nPlease try again!")
         files = self.read_vault(caller_usr, caller_session, target_vault)
         filename = f"vaults/{caller_usr}/{target_vault}/" + filename
         if filename in files:
@@ -302,20 +311,34 @@ class admin_functions():
             return self.auth.throw_error(2, "Invalid data!")
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        dot_cnt = 0
+        for char in filename:
+            if dot_cnt > 1:
+                return self.auth.throw_error(3, "You cannot enter more than one .")
+            if char == ".":
+                dot_cnt+=1
+            if char not in self.filename_wl:
+                return self.auth.throw_error(1, "Your input contains charaters which are not allowed to be used!\nPlease try again!")
         files = self.read_vault(caller_usr, caller_session, target_vault)
         if filename not in files:
             self.auth.throw_error(2, "Filename doesn't exist in vault!")
         path = f"vaults/{caller_usr}/{target_vault}/"
         fname = path + filename
-        file_data = codecs.open(fname, "rb").read()
-        file_data_b64 = base64.b64encode(file_data)
-        return file_data_b64
+        return fname
     
     def delete_from_vault(self, caller_usr=None, caller_session=None, target_vault=None, target_file=None):
         if caller_usr==None or caller_session==None or target_vault==None or target_file==None:
             return self.auth.throw_error(2, "Invalid data!")
         if self.auth.session_authentication(caller_usr, caller_session) != True:
             return self.auth.throw_error(2, "Session error!\nInvalid session!")
+        dot_cnt = 0
+        for char in target_file:
+            if dot_cnt > 1:
+                return self.auth.throw_error(3, "You cannot enter more than one .")
+            if char == ".":
+                dot_cnt+=1
+            if char not in self.filename_wl:
+                return self.auth.throw_error(1, "Your input contains charaters which are not allowed to be used!\nPlease try again!")
         files = self.read_vault(caller_usr, caller_session, target_vault)
         if files == False:
             return self.auth.throw_error(3, "Invalid vault data!")
