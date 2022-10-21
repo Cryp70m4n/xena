@@ -19,7 +19,7 @@ function base64ToArrayBuffer(base64) {
  }
 
  function saveByteArray(reportName, byte) {
-    let blob = new Blob([byte], {type: "application/pdf"});
+    let blob = new Blob([byte], {type: "application/javascript"});
     let link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     let fileName = reportName;
@@ -160,6 +160,7 @@ function download_from_vault() {
 		if(isJsonObject(response) != true)
 			return "Failure!"
 		let response_obj = JSON.parse(response);
+		console.log(JSON.stringify(response_obj))
 		if(response_obj.response_code == 0) {
 			console.log(response_obj)
 			let data = base64ToArrayBuffer(response_obj.filedata);
