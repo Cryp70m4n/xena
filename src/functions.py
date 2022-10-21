@@ -36,7 +36,7 @@ class admin_functions():
         self.allowed_characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
                                    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         self.allowed_password_characters = self.allowed_characters + list(string.ascii_uppercase) + ['#', '!', '@', '?', '^', '$']
-        self.filename_wl = self.allowed_characters + "."
+        self.filename_wl = self.allowed_characters + list(".")
         self.auth = authorisation()
 
     def input_validation(self, usr_input=None):
@@ -324,8 +324,13 @@ class admin_functions():
             self.auth.throw_error(2, "Filename doesn't exist in vault!")
         path = f"vaults/{caller_usr}/{target_vault}/"
         fname = path + filename
-        return fname
-    
+        try:
+            file_data = codecs.open(fname, "rb").read()
+            file_data_b64 = base64.b64encode(file_data)
+            return file_data_b64
+        except:
+            return self.auth.throw_error(2, "File cannot be found!")
+
     def delete_from_vault(self, caller_usr=None, caller_session=None, target_vault=None, target_file=None):
         if caller_usr==None or caller_session==None or target_vault==None or target_file==None:
             return self.auth.throw_error(2, "Invalid data!")

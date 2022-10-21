@@ -7,6 +7,26 @@ function isJsonObject(strData) {
     return true;
 }
 
+function base64ToArrayBuffer(base64) {
+    let binaryString = window.atob(base64);
+    let binaryLen = binaryString.length;
+    let bytes = new Uint8Array(binaryLen);
+    for (let i = 0; i < binaryLen; i++) {
+       let ascii = binaryString.charCodeAt(i);
+       bytes[i] = ascii;
+    }
+    return bytes;
+ }
+
+ function saveByteArray(reportName, byte) {
+    let blob = new Blob([byte], {type: "application/pdf"});
+    let link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    let fileName = reportName;
+    link.download = fileName;
+    link.click();
+};
+
 
 
 let usr = localStorage.getItem('user');
@@ -110,6 +130,40 @@ function delete_from_vaults() {
 		let response_obj = JSON.parse(response);
 		if(response_obj.response_code) {
 			console.log(response_obj)
+			return "Success!";
+		}
+		return "Failure!";
+	}
+
+	xhr.send(JSON.stringify(data));
+}
+
+function download_from_vault() {
+	let target_vault = document.getElementById("vn").value;
+	let filename = document.getElementById("fn").value;
+	let xhr = new XMLHttpRequest();
+	let method = "POST"
+    let action = "/get_from_vault"
+	xhr.open(method, action, true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	let data = {
+		"user": usr,
+		"session": session,
+		"target_vault": target_vault,
+		"target_file": filename
+	};
+	xhr.onload = function() {
+		let response = null;
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
+		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
+		let response_obj = JSON.parse(response);
+		if(response_obj.response_code == 0) {
+			console.log(response_obj)
+			let data = base64ToArrayBuffer(response_obj.filedata);
+			saveByteArray(response_obj.filename, data);
 			return "Success!";
 		}
 		return "Failure!";

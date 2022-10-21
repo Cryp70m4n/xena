@@ -524,8 +524,13 @@ def get_from_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    filepath = functions.get_from_vault(user, session, data["target_vault"], data["target_file"])
-    return send_file(filepath, as_attachment=True)
+    filedata = functions.get_from_vault(user, sess, data["target_vault"], data["target_file"])
+    try:
+        success_response_data = {"response_status": "Success!", "filename": data["target_file"], "filedata": filedata.decode("utf-8"), "response_code": 0}
+        success_response = json.dumps(success_response_data)
+        return success_response
+    except:
+        return fail_response
 
 @app.route('/insert_into_vault', methods=['POST'])
 def insert_into_vault():
