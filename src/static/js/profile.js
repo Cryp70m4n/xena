@@ -160,7 +160,6 @@ function download_from_vault() {
 		if(isJsonObject(response) != true)
 			return "Failure!"
 		let response_obj = JSON.parse(response);
-		console.log(JSON.stringify(response_obj))
 		if(response_obj.response_code == 0) {
 			console.log(response_obj)
 			let data = base64ToArrayBuffer(response_obj.filedata);
