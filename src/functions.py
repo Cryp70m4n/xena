@@ -282,6 +282,11 @@ class admin_functions():
             self.auth.throw_error(2, "Vault you are looking for doesn't exist!")
         vault_path = f"vaults/{caller_usr}/{target_vault}/*"
         files = glob.glob(vault_path)
+        i = 0
+        while i < len(files):
+            tmp = files[i].split("/")
+            files[i] = tmp[len(tmp)-1]
+            i+=1
         return files
     
     def insert_into_vault(self, caller_usr=None, caller_session=None, target_vault=None, file_data_b64=None, filename=None):

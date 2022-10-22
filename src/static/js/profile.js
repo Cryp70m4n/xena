@@ -68,6 +68,40 @@ function get_vaults() {
 	xhr.send(JSON.stringify(data));
 }
 
+function list_files() {
+	let t_vault = document.getElementById("tvaul").value;
+	let method = "POST"
+    let action = "/list_files"
+	let xhr = new XMLHttpRequest();
+	xhr.open(method, action, true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	let data = {
+		"user": usr,
+		"session": session,
+		"target_vault": t_vault
+	};
+	xhr.onload = function() {
+		let response = null;
+		if (xhr.status >= 200 && xhr.status < 300) {
+			response = xhr.responseText;
+		}
+		if(isJsonObject(response) != true)
+			return "Failure!"
+		let response_obj = JSON.parse(response);
+		if(response_obj.files) {
+            let vaults = response_obj.files;
+            let vaults_element = document.getElementById("items");
+            vaults_element.textContent += vaults;
+            vaults_element.textContent += " ";
+			vaults_element.style.color = "white";
+            return "Success!"
+		}
+		return "Failure!";
+	}
+
+	xhr.send(JSON.stringify(data));
+}
+
 
 function insert_into_vault() {
 	let target_vault = document.getElementById("vaultname").value;
