@@ -31,7 +31,7 @@
 			<input id="filedata" type="file" name="file">
             <br>
 			<br>
-            <button type="button" class="form_button" onclick="insert_into_vault()">Insert into vault</button>
+            <button type="button" class="form_button" id="dugmence" onclick="insert_into_vault()">Insert into vault</button>
         </form>
 
 		<form action="/delete_from_vault" method="POST" class="delete_from_vault" id="delete_from_vault">
@@ -43,13 +43,13 @@
 			<input type="text" placeholder="File name" class="filename" id="fname">
 			<br>
 			<br>
-            <button type="button" class="delb" onclick="delete_from_vaults()">Delete from vault</button>
+            <button type="button" class="delb" id="delb" onclick="delete_from_vaults()">Delete from vault</button>
         </form>
 
 		<p id="dp">Download file</p>
 		<input type="text" placeholder="Filename" class="fn" id="fn">
 		<input type="text" placeholder="Vault" class="vn" id="vn">
-		<button type="button" class="dwnb" onclick="download_from_vault()">Download from vault</button>
+		<button type="button" class="dwnb" id="dwnb" onclick="download_from_vault()">Download from vault</button>
 
 		<script src="/static/js/logout.js"></script>
 		<script src="/static/js/profile.js"></script>

@@ -3,13 +3,18 @@ from gevent.pywsgi import WSGIServer
 import binascii
 import string
 import json
+import glob
 import threading
+import random
 
 from auth import authorisation
 import configs
 from functions import admin_functions
 import logger
 from scripts.shared import shared
+
+
+from pyngrok import ngrok
 
 """
 TODO:
@@ -36,7 +41,8 @@ permission_configs = configs.permission_config_parser("configs/permissions.cfg")
 ip = "127.0.0.1"
 port = 4334
 app = Flask(__name__, template_folder='templates')
-
+ngrok.set_auth_token("TOKEN")
+public_url= ngrok.connect(port).public_url
 
 #INPUT WHITELISTS
 chars = list(string.ascii_lowercase)
@@ -138,6 +144,23 @@ def permission_level_auth(data = None):
 def index():
     log_info(request)
     return render_template('/index.html')
+
+@app.route('/music', methods=['GET'])
+def music():
+    log_info(request)
+    return render_template('/music.html')
+
+@app.route('/music_choice', methods=['POST'])
+def music_choice():
+    files = glob.glob("static/music/*")
+    i = 0
+    while i < len(files):
+        tmp = files[i].split("/")
+        files[i] = tmp[len(tmp)-1]
+        i+=1
+    music = random.choice(files)
+    data = json.dumps({"song": music, "response_code": 0})
+    return data
 
 @app.route('/admin', methods=['GET'])
 def admin():
@@ -522,9 +545,7 @@ def delete_from_vault():
     sess = str(session_string)
     user = data["user"]
     user = user.replace('"', '')
-    check_resp = functions.delete_from_vault(user, sess, data["target_vault"], data["filename"])
-    if check_resp != True:
-        return fail_response
+    functions.delete_from_vault(user, sess, data["target_vault"], data["filename"])
     success_response_data = {"response_status": "Success!", "response_code": 0}
     success_response = json.dumps(success_response_data)
     return success_response
@@ -638,6 +659,8 @@ def logout():
 
 if (__name__ == "__main__"):
     #app.run(port=port, debug=False,use_reloader=False)
-    http_server = WSGIServer((ip, port), app)
-    print(f"Starting Xena systems on http://{ip}:{port}")
-    http_server.serve_forever()
+    #http_server = WSGIServer((ip, port), app)
+    #print(f"Starting Xena systems on http://{ip}:{port}")
+    #http_server.serve_forever()
+    print(public_url)
+    app.run(port=port)

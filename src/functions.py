@@ -352,9 +352,9 @@ class admin_functions():
         files = self.read_vault(caller_usr, caller_session, target_vault)
         if files == False:
             return self.auth.throw_error(3, "Invalid vault data!")
-        target_file = f"vaults/{caller_usr}/{target_vault}/" + target_file
         if target_file not in files:
             return self.auth.throw_error(2, "Target file cannot be found inside specified vault!")
+        target_file = f"vaults/{caller_usr}/{target_vault}/" + target_file
         cmd = f"shred -uzvn3 {target_file}"
         os.system(cmd)
         return self.auth.throw_success("File have been deleted from your vault successfully!")
